@@ -10,4 +10,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile_name_label"/>
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/profile_location_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_location_label"/>
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/profile_level_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_level_label"/>
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/profile_points_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_points_label"/>
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/profile_rank_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_rank_label"/>
+    <Button
+        android:id="@+id/play_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/play_button"/>
 </LinearLayout>

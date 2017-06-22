@@ -9,10 +9,20 @@ import java.util.UUID;
 public class Profile {
     private UUID mId;
     private String mName;
+    private String mLocation;
+    private int mStage;
+    private int mLevel;
+    private int mPoints;
+    private int mRank;
 
     public Profile() {
         mId = UUID.randomUUID();
         mName = "John Doe";
+        mLocation = "Nowhere";
+        mStage = 1;
+        mLevel = 1;
+        mPoints = 0;
+        mRank = 999;
 
     }
 
@@ -30,5 +40,45 @@ public class Profile {
 
     public void setName(String name) {
         mName = name;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+    }
+
+    public int getStage() {
+        return mStage;
+    }
+
+    public void setStage(int stage) {
+        mStage = stage;
+    }
+
+    public int getLevel() {
+        return mLevel;
+    }
+
+    public void setLevel(int level) {
+        mLevel = level;
+    }
+
+    public int getPoints() {
+        return mPoints;
+    }
+
+    public void setPoints(int points) {
+        mPoints = points;
+    }
+
+    public int getRank() {
+        return mRank;
+    }
+
+    public void setRank(int rank) {
+        mRank = rank;
     }
 }
