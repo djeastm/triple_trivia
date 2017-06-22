@@ -12,7 +12,7 @@
     <!-- res/values/styles.xml -->
 <resources>
     <!-- your theme inherits from the material theme -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- theme customizations -->
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
@@ -23,4 +23,8 @@
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/black</item>
     </style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
 </resources>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HardcoreTrivia</string>
+    <string name="profile_name_label">Name</string>
+    <string name="leaderboard_label">Leader</string>
+    <string name="settings_label">Settings</string>
+    <string name="about_label">About</string>
 </resources>
