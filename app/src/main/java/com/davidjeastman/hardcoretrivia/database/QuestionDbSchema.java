@@ -10,7 +10,7 @@ public class QuestionDbSchema {
 
         public static final class Cols {
             public static final String UUID = "uuid";
-            public static final String BATCH = "batch";
+            public static final String TRIPLE = "triple";
             public static final String ORDER = "order";
             public static final String CORRECT_ANSWER = "correct_answer";
             public static final String ANSWER2 = "answer2";

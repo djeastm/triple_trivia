@@ -28,7 +28,7 @@ public class QuestionCursorWrapper extends CursorWrapper {
 
     public Question getQuestion() {
     String uuidString = getString(getColumnIndex(QuestionTable.Cols.UUID));
-        String batch = getString(getColumnIndex(QuestionTable.Cols.BATCH));
+        String batch = getString(getColumnIndex(QuestionTable.Cols.TRIPLE));
         String order = getString(getColumnIndex(QuestionTable.Cols.ORDER));
         String correctAnswer = getString(getColumnIndex(QuestionTable.Cols.CORRECT_ANSWER));
         String answer2 = getString(getColumnIndex(QuestionTable.Cols.ANSWER2));

@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Debug;
+import android.util.Log;
 
 import com.davidjeastman.hardcoretrivia.database.QuestionBaseHelper;
 import com.davidjeastman.hardcoretrivia.database.QuestionCursorWrapper;
@@ -17,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by David Eastman on 6/24/2017.
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 public class QuestionBank {
     public static final String APP_NAME = "HardcoreTrivia";
+    public static final String TAG = "QuestionBank";
     public static final String APP_DIRECTORY = APP_NAME;
 
     private static QuestionBank sQuestionBank;
@@ -48,7 +50,7 @@ public class QuestionBank {
     private static ContentValues getContentValues(Question Question) {
         ContentValues values = new ContentValues();
         values.put(QuestionTable.Cols.UUID, Question.getId().toString());
-        values.put(QuestionTable.Cols.BATCH, Question.getTriple());
+        values.put(QuestionTable.Cols.TRIPLE, Question.getTriple());
         values.put(QuestionTable.Cols.ORDER, Question.getOrder());
         values.put(QuestionTable.Cols.CORRECT_ANSWER, Question.getCorrectAnswer());
         values.put(QuestionTable.Cols.ANSWER2, Question.getAnswer2());
@@ -95,7 +97,7 @@ public class QuestionBank {
 
         if (searchTerm != null) {
             queryWhereClause = "BATCH LIKE '%" + searchTerm +
-                    "%' OR ORDER LIKE '%"+ searchTerm + "%'";
+                    "%' OR ORDER LIKE '%" + searchTerm + "%'";
         } else {
             queryWhereClause = null;
         }
@@ -119,17 +121,28 @@ public class QuestionBank {
         return entries;
     }
 
-    public Question getQuestion(UUID id) {
+    public List<Question> getQuestions(int tripleId) {
+        List<Question> questions = new ArrayList<>(3);
+
         QuestionCursorWrapper cursor = queryQuestions(
-                QuestionTable.Cols.UUID + " = ?",
-                new String[]{id.toString()}
+                QuestionTable.Cols.TRIPLE + " = ?",
+                new String[]{String.valueOf(tripleId)}
         );
         try {
             if (cursor.getCount() == 0) {
                 return null;
+            } else if (cursor.getCount() == 3) {
+                cursor.moveToFirst();
+                questions.add(0, cursor.getQuestion());
+                cursor.moveToNext();
+                questions.add(1, cursor.getQuestion());
+                cursor.moveToNext();
+                questions.add(2, cursor.getQuestion());
+                return questions;
+            } else {
+                Log.e(TAG,"Not enough questions");
+                return null;
             }
-            cursor.moveToFirst();
-            return cursor.getQuestion();
         } finally {
             cursor.close();
         }

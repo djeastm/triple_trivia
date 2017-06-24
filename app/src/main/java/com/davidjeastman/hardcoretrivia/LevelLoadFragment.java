@@ -14,15 +14,15 @@ import android.widget.TextView;
 
 public class LevelLoadFragment extends Fragment {
 
-    private static final String TAG_FRAGMENT = "game_load_fragment";
-    private static final String ARG_STAGE_ID = "stage_id";
+    private static final String TAG = "LevelLoadFragment";
+    private static final String ARG_LEVEL_ID = "level_id";
 
     private TextView mTestTextView;
-    private int stage;
+    private int level;
 
-    public static LevelLoadFragment newInstance(int stageId) {
+    public static LevelLoadFragment newInstance(int levelId) {
         Bundle args = new Bundle();
-        args.putInt(ARG_STAGE_ID, stageId);
+        args.putInt(ARG_LEVEL_ID, levelId);
         LevelLoadFragment fragment = new LevelLoadFragment();
         fragment.setArguments(args);
         return fragment;
@@ -39,8 +39,8 @@ public class LevelLoadFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_game_load, container, false);
         mTestTextView = (TextView) v.findViewById(R.id.game_test_text_view);
 
-        stage = getArguments().getInt(ARG_STAGE_ID,-1);
-        mTestTextView.setText(String.valueOf(stage));
+        level = getArguments().getInt(ARG_LEVEL_ID,-1);
+        mTestTextView.setText(String.valueOf(level));
 
         new CountDownTimer(1000, 1000) {
             @Override
@@ -50,9 +50,9 @@ public class LevelLoadFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                LevelRunFragment nextFrag= LevelRunFragment.newInstance(stage);
+                LevelRunFragment nextFrag= LevelRunFragment.newInstance(level);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.game_container, nextFrag,TAG_FRAGMENT)
+                        .replace(R.id.game_container, nextFrag,TAG)
                         .commit();
             }
 
