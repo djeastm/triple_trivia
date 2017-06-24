@@ -6,7 +6,7 @@
     android:id="@+id/game_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.davidjeastman.hardcoretrivia.GameActivity">
+    tools:context="com.davidjeastman.hardcoretrivia.LevelActivity">
 
 
 

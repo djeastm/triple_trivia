@@ -1,6 +1,5 @@
 package com.davidjeastman.hardcoretrivia;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.UUID;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -63,7 +60,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int stage = mProfile.getStage();
-                Intent intent = new Intent(GameActivity.newIntent(getActivity(), stage));
+                Intent intent = new Intent(LevelActivity.newIntent(getActivity(), stage));
                 startActivity(intent);
             }
         });

@@ -7,12 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-public class GameActivity extends AppCompatActivity {
+public class LevelActivity extends AppCompatActivity {
 
     private static final String EXTRA_STAGE_ID = "com.davidjeastman.hardcoretrivia.stage_id";
 
     public static Intent newIntent(Context packageContext, int stage) {
-        Intent intent = new Intent(packageContext, GameActivity.class);
+        Intent intent = new Intent(packageContext, LevelActivity.class);
         intent.putExtra(EXTRA_STAGE_ID, stage);
         return intent;
     }
@@ -31,7 +31,7 @@ public class GameActivity extends AppCompatActivity {
 
     protected Fragment createFragment() {
         int stageId = (int) getIntent().getSerializableExtra(EXTRA_STAGE_ID);
-        return GameLoadFragment.newInstance(stageId);
+        return LevelLoadFragment.newInstance(stageId);
     }
 
 }
