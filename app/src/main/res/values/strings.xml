@@ -9,4 +9,9 @@
     <string name="settings_label">Settings</string>
     <string name="about_label">About</string>
     <string name="play_button">Play</string>
+    <string name="answer_button_1">Answer 1</string>
+    <string name="answer_button_2">Answer 2</string>
+    <string name="answer_button_3">Answer 3</string>
+    <string name="answer_button_4">Answer 4</string>
+
 </resources>

@@ -2,6 +2,7 @@ package com.davidjeastman.hardcoretrivia;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 
 public class GameLoadFragment extends Fragment {
 
+    private static final String TAG_FRAGMENT = "game_load_fragment";
     private static final String ARG_STAGE_ID = "stage_id";
 
     private TextView mTestTextView;
+    private int stage;
 
     public static GameLoadFragment newInstance(int stageId) {
         Bundle args = new Bundle();
@@ -38,9 +41,24 @@ public class GameLoadFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_game_load, container, false);
         mTestTextView = (TextView) v.findViewById(R.id.game_test_text_view);
 
-        int stage = getArguments().getInt(ARG_STAGE_ID,-1);
+        stage = getArguments().getInt(ARG_STAGE_ID,-1);
         mTestTextView.setText(String.valueOf(stage));
 
+        new CountDownTimer(1000, 1000) {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                GameRunFragment nextFrag= GameRunFragment.newInstance(stage);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.game_container, nextFrag,TAG_FRAGMENT)
+                        .commit();
+            }
+
+        }.start();
         return v;
     }
 
