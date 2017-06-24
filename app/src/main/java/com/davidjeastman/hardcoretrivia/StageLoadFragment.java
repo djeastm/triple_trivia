@@ -12,18 +12,18 @@ import android.widget.TextView;
  * Created by David Eastman on 6/22/2017.
  */
 
-public class LevelLoadFragment extends Fragment {
+public class StageLoadFragment extends Fragment {
 
-    private static final String TAG = "LevelLoadFragment";
-    private static final String ARG_LEVEL_ID = "level_id";
+    private static final String TAG = "StageLoadFragment";
+    private static final String ARG_STAGE_ID = "stage_id";
 
     private TextView mTestTextView;
-    private int level;
+    private int stage;
 
-    public static LevelLoadFragment newInstance(int levelId) {
+    public static StageLoadFragment newInstance(int stageId) {
         Bundle args = new Bundle();
-        args.putInt(ARG_LEVEL_ID, levelId);
-        LevelLoadFragment fragment = new LevelLoadFragment();
+        args.putInt(ARG_STAGE_ID, stageId);
+        StageLoadFragment fragment = new StageLoadFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,11 +36,11 @@ public class LevelLoadFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_game_load, container, false);
+        View v = inflater.inflate(R.layout.fragment_stage_load, container, false);
         mTestTextView = (TextView) v.findViewById(R.id.game_test_text_view);
 
-        level = getArguments().getInt(ARG_LEVEL_ID,-1);
-        mTestTextView.setText(String.valueOf(level));
+        stage = getArguments().getInt(ARG_STAGE_ID,-1);
+        mTestTextView.setText(String.valueOf(stage));
 
         new CountDownTimer(1000, 1000) {
             @Override
@@ -50,7 +50,7 @@ public class LevelLoadFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                LevelRunFragment nextFrag= LevelRunFragment.newInstance(level);
+                StageRunFragment nextFrag= StageRunFragment.newInstance(stage);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.game_container, nextFrag,TAG)
                         .commit();

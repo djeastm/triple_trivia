@@ -10,13 +10,16 @@ public class Question {
     public static final String TAG = "Question";
 
     private UUID mId;
-    private String mTriple;
-    private String mOrder;
+    private int mTriple;
+    private int mOrder;
     private String mCorrectAnswer;
     private String mAnswer2;
     private String mAnswer3;
     private String mAnswer4;
     private String mQuestion;
+    private boolean mQuestionSeen;
+    private boolean mPlayerCorrect;
+    private String mPlayerAnswer;
 
     public Question() {
         this(UUID.randomUUID());
@@ -34,19 +37,19 @@ public class Question {
         mId = id;
     }
 
-    public String getTriple() {
+    public int getTriple() {
         return mTriple;
     }
 
-    public void setTriple(String triple) {
+    public void setTriple(int triple) {
         mTriple = triple;
     }
 
-    public String getOrder() {
+    public int getOrder() {
         return mOrder;
     }
 
-    public void setOrder(String order) {
+    public void setOrder(int order) {
         mOrder = order;
     }
 
@@ -88,5 +91,29 @@ public class Question {
 
     public void setQuestion(String question) {
         mQuestion = question;
+    }
+
+    public boolean isQuestionSeen() {
+        return mQuestionSeen;
+    }
+
+    public void setQuestionSeen(boolean questionSeen) {
+        mQuestionSeen = questionSeen;
+    }
+
+    public boolean isPlayerCorrect() {
+        return mPlayerCorrect;
+    }
+
+    public void setPlayerCorrect(boolean playerCorrect) {
+        mPlayerCorrect = playerCorrect;
+    }
+
+    public String getPlayerAnswer() {
+        return mPlayerAnswer;
+    }
+
+    public void setPlayerAnswer(String playerAnswer) {
+        mPlayerAnswer = playerAnswer;
     }
 }

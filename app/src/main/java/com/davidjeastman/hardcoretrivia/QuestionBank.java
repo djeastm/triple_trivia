@@ -57,6 +57,9 @@ public class QuestionBank {
         values.put(QuestionTable.Cols.ANSWER3, Question.getAnswer3());
         values.put(QuestionTable.Cols.ANSWER4, Question.getAnswer4());
         values.put(QuestionTable.Cols.QUESTION, Question.getQuestion());
+        values.put(QuestionTable.Cols.QUESTION_SEEN, Question.isQuestionSeen());
+        values.put(QuestionTable.Cols.PLAYER_CORRECT, Question.isPlayerCorrect());
+        values.put(QuestionTable.Cols.PLAYER_ANSWER, Question.getPlayerAnswer());
 
         return values;
     }
@@ -112,12 +115,12 @@ public class QuestionBank {
         } finally {
             cursor.close();
         }
-        Collections.sort(entries, new Comparator<Question>() {
-            @Override
-            public int compare(Question e1, Question e2) {
-                return e1.getTriple().compareTo(e2.getTriple());
-            }
-        });
+//        Collections.sort(entries, new Comparator<Question>() {
+//            @Override
+//            public int compare(Question e1, Question e2) {
+//                return e1.getTriple().compareTo(e2.getTriple());
+//            }
+//        });
         return entries;
     }
 
@@ -148,13 +151,13 @@ public class QuestionBank {
         }
     }
 
-//    public void updateQuestion(Question Question) {
-//        String uuidString = Question.getId().toString();
-//        ContentValues values = getContentValues(Question);
-//        mDatabase.update(QuestionTable.NAME, values,
-//                QuestionTable.Cols.UUID + " = ?",
-//                new String[]{uuidString});
-//    }
+    public void updateQuestion(Question Question) {
+        String uuidString = Question.getId().toString();
+        ContentValues values = getContentValues(Question);
+        mDatabase.update(QuestionTable.NAME, values,
+                QuestionTable.Cols.UUID + " = ?",
+                new String[]{uuidString});
+    }
 
     private QuestionCursorWrapper queryQuestions(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(

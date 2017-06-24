@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int stage = mProfile.getStage();
-                Intent intent = new Intent(LevelActivity.newIntent(getActivity(), stage));
+                Intent intent = new Intent(StageActivity.newIntent(getActivity(), stage));
                 startActivity(intent);
             }
         });
