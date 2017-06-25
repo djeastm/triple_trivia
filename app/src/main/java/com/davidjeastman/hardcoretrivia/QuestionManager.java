@@ -4,47 +4,44 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Debug;
 import android.util.Log;
 
-import com.davidjeastman.hardcoretrivia.database.QuestionBaseHelper;
-import com.davidjeastman.hardcoretrivia.database.QuestionCursorWrapper;
-import com.davidjeastman.hardcoretrivia.database.QuestionDbSchema.QuestionTable;
+import com.davidjeastman.hardcoretrivia.database.TriviaDbHelper;
+import com.davidjeastman.hardcoretrivia.database.TriviaCursorWrapper;
+import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.QuestionTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by David Eastman on 6/24/2017.
  */
 
-public class QuestionBank {
+public class QuestionManager {
     public static final String APP_NAME = "HardcoreTrivia";
-    public static final String TAG = "QuestionBank";
+    public static final String TAG = "QuestionManager";
     public static final String APP_DIRECTORY = APP_NAME;
 
-    private static QuestionBank sQuestionBank;
+    private static QuestionManager sQuestionManager;
 
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
-    private QuestionBank(Context context) {
+    private QuestionManager(Context context) {
         mContext = context.getApplicationContext();
-        mDatabase = new QuestionBaseHelper(mContext)
+        mDatabase = new TriviaDbHelper(mContext)
                 .getWritableDatabase();
     }
 
-    public static QuestionBank get(Context context) {
-        if (sQuestionBank == null) {
-            sQuestionBank = new QuestionBank(context);
+    public static QuestionManager get(Context context) {
+        if (sQuestionManager == null) {
+            sQuestionManager = new QuestionManager(context);
         }
-        return sQuestionBank;
+        return sQuestionManager;
     }
 
     private static ContentValues getContentValues(Question Question) {
@@ -57,6 +54,7 @@ public class QuestionBank {
         values.put(QuestionTable.Cols.ANSWER3, Question.getAnswer3());
         values.put(QuestionTable.Cols.ANSWER4, Question.getAnswer4());
         values.put(QuestionTable.Cols.QUESTION, Question.getQuestion());
+        values.put(QuestionTable.Cols.DIFFICULTY, Question.getDifficulty());
         values.put(QuestionTable.Cols.QUESTION_SEEN, Question.isQuestionSeen());
         values.put(QuestionTable.Cols.PLAYER_CORRECT, Question.isPlayerCorrect());
         values.put(QuestionTable.Cols.PLAYER_ANSWER, Question.getPlayerAnswer());
@@ -105,7 +103,7 @@ public class QuestionBank {
             queryWhereClause = null;
         }
 
-        QuestionCursorWrapper cursor = queryQuestions(queryWhereClause, null);
+        TriviaCursorWrapper cursor = queryQuestions(queryWhereClause, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -127,7 +125,7 @@ public class QuestionBank {
     public List<Question> getQuestions(int tripleId) {
         List<Question> questions = new ArrayList<>(3);
 
-        QuestionCursorWrapper cursor = queryQuestions(
+        TriviaCursorWrapper cursor = queryQuestions(
                 QuestionTable.Cols.TRIPLE + " = ?",
                 new String[]{String.valueOf(tripleId)}
         );
@@ -159,7 +157,7 @@ public class QuestionBank {
                 new String[]{uuidString});
     }
 
-    private QuestionCursorWrapper queryQuestions(String whereClause, String[] whereArgs) {
+    private TriviaCursorWrapper queryQuestions(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
                 QuestionTable.NAME,
                 null, // Columns - null selects all columns
@@ -169,6 +167,6 @@ public class QuestionBank {
                 null, // having
                 null // orderBy
         );
-        return new QuestionCursorWrapper(cursor);
+        return new TriviaCursorWrapper(cursor);
     }
 }

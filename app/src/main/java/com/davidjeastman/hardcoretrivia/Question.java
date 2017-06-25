@@ -17,6 +17,7 @@ public class Question {
     private String mAnswer3;
     private String mAnswer4;
     private String mQuestion;
+    private int difficulty;
     private boolean mQuestionSeen;
     private boolean mPlayerCorrect;
     private String mPlayerAnswer;
@@ -91,6 +92,14 @@ public class Question {
 
     public void setQuestion(String question) {
         mQuestion = question;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
     public boolean isQuestionSeen() {

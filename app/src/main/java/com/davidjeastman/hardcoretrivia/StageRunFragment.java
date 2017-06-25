@@ -50,7 +50,7 @@ public class StageRunFragment extends Fragment{
 //        int tripleId = (int) getArguments().getSerializable(ARG_TRIPLE_ID);
         mQuestions = new ArrayList<>(9);
         for (int tripleId = 1; tripleId <= 3; tripleId++) {
-            mQuestions.addAll(QuestionBank.get(getActivity()).getQuestions(tripleId));            
+            mQuestions.addAll(QuestionManager.get(getActivity()).getQuestions(tripleId));
         }
         
         for(int i = 0; i < mQuestions.size(); i++) {

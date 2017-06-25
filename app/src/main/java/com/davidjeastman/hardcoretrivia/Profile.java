@@ -12,18 +12,21 @@ public class Profile {
     private String mLocation;
     private int mStage;
     private int mLevel;
+    private int mSkill;
     private int mPoints;
     private int mRank;
 
-    public Profile() {
-        mId = UUID.randomUUID();
+    public Profile() { this(UUID.randomUUID()); }
+
+    public Profile(UUID id) {
+        mId = id;
         mName = "John Doe";
         mLocation = "Nowhere";
         mStage = 1;
         mLevel = 1;
+        mSkill = 1;
         mPoints = 0;
         mRank = 999;
-
     }
 
     public UUID getId() {
@@ -64,6 +67,14 @@ public class Profile {
 
     public void setLevel(int level) {
         mLevel = level;
+    }
+
+    public int getSkill() {
+        return mSkill;
+    }
+
+    public void setSkill(int skill) {
+        mSkill = skill;
     }
 
     public int getPoints() {

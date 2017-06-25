@@ -3,8 +3,10 @@ package com.davidjeastman.hardcoretrivia.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.davidjeastman.hardcoretrivia.Profile;
 import com.davidjeastman.hardcoretrivia.Question;
-import com.davidjeastman.hardcoretrivia.database.QuestionDbSchema.QuestionTable;
+import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.QuestionTable;
+import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.ProfileTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,10 +20,33 @@ import java.util.UUID;
  * Created by David Eastman on 6/24/2017.
  */
 
-public class QuestionCursorWrapper extends CursorWrapper {
+public class TriviaCursorWrapper extends CursorWrapper {
 
-    public QuestionCursorWrapper(Cursor cursor) {
+    public TriviaCursorWrapper(Cursor cursor) {
         super(cursor);
+    }
+
+    public Profile getProfile() {
+        String uuidString = getString(getColumnIndex(ProfileTable.Cols.UUID));
+        String name = getString(getColumnIndex(ProfileTable.Cols.NAME));
+        String location = getString(getColumnIndex(ProfileTable.Cols.LOCATION));
+        int stage = getInt(getColumnIndex(ProfileTable.Cols.STAGE));
+        int level = getInt(getColumnIndex(ProfileTable.Cols.LEVEL));
+        int skill = getInt(getColumnIndex(ProfileTable.Cols.SKILL));
+        int points = getInt(getColumnIndex(ProfileTable.Cols.POINTS));
+        int rank = getInt(getColumnIndex(ProfileTable.Cols.RANK));
+
+
+        Profile profile = new Profile(UUID.fromString(uuidString));
+        profile.setName(name);
+        profile.setLocation(location);
+        profile.setStage(stage);
+        profile.setLevel(level);
+        profile.setSkill(skill);
+        profile.setPoints(points);
+        profile.setRank(rank);
+
+        return profile;
     }
 
     public Question getQuestion() {
@@ -34,6 +59,7 @@ public class QuestionCursorWrapper extends CursorWrapper {
         String answer3 = getString(getColumnIndex(QuestionTable.Cols.ANSWER3));
         String answer4 = getString(getColumnIndex(QuestionTable.Cols.ANSWER4));
         String questionString = getString(getColumnIndex(QuestionTable.Cols.QUESTION));
+        int difficulty = getInt(getColumnIndex(QuestionTable.Cols.DIFFICULTY));
         // User-affected
         String questionSeen = getString(getColumnIndex(QuestionTable.Cols.QUESTION_SEEN));
         String playerCorrect = getString(getColumnIndex(QuestionTable.Cols.PLAYER_CORRECT));
@@ -47,6 +73,7 @@ public class QuestionCursorWrapper extends CursorWrapper {
         question.setAnswer3(answer3);
         question.setAnswer4(answer4);
         question.setQuestion(questionString);
+        question.setDifficulty(difficulty);
         question.setQuestionSeen(Boolean.parseBoolean(questionSeen));
         question.setPlayerCorrect(Boolean.parseBoolean(playerCorrect));
         question.setPlayerAnswer(playerAnswer);

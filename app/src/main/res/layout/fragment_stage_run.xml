@@ -32,6 +32,9 @@
 
         <TextView
             android:id="@+id/question_textview"
+            android:text="@string/question_text_placeholder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:gravity="center"
             android:layout_width="270dp"
             android:layout_height="166dp"
             android:ems="10"
