@@ -10,9 +10,10 @@ public class TriviaDbSchema {
 
         public static final class Cols {
             // Built-in
+            public static final String _ID = "_id";
             public static final String UUID = "uuid";
             public static final String TRIPLE = "triple";
-            public static final String ORDER = "order";
+            public static final String POSITION = "position";
             public static final String CORRECT_ANSWER = "correct_answer";
             public static final String ANSWER2 = "answer2";
             public static final String ANSWER3 = "answer3";

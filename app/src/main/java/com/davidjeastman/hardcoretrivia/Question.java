@@ -9,9 +9,10 @@ import java.util.UUID;
 public class Question {
     public static final String TAG = "Question";
 
-    private UUID mId;
+    private int mId;
+    private UUID mUUID;
     private int mTriple;
-    private int mOrder;
+    private int mPosition;
     private String mCorrectAnswer;
     private String mAnswer2;
     private String mAnswer3;
@@ -22,20 +23,28 @@ public class Question {
     private boolean mPlayerCorrect;
     private String mPlayerAnswer;
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        this.mId = id;
+    }
+
     public Question() {
         this(UUID.randomUUID());
     }
 
     public Question(UUID id) {
-        mId = id;
+        mUUID = id;
     }
 
-    public UUID getId() {
-        return mId;
+    public UUID getUUID() {
+        return mUUID;
     }
 
-    public void setId(UUID id) {
-        mId = id;
+    public void setUUID(UUID UUID) {
+        mUUID = UUID;
     }
 
     public int getTriple() {
@@ -46,12 +55,12 @@ public class Question {
         mTriple = triple;
     }
 
-    public int getOrder() {
-        return mOrder;
+    public int getPosition() {
+        return mPosition;
     }
 
-    public void setOrder(int order) {
-        mOrder = order;
+    public void setPosition(int position) {
+        mPosition = position;
     }
 
     public String getCorrectAnswer() {
@@ -125,4 +134,5 @@ public class Question {
     public void setPlayerAnswer(String playerAnswer) {
         mPlayerAnswer = playerAnswer;
     }
+
 }

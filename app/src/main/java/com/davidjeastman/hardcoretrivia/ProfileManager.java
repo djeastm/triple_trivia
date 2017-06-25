@@ -81,7 +81,7 @@ public class ProfileManager {
     }
 //
 //    public void deleteProfile(Profile c) {
-//        String uuidString = c.getId().toString();
+//        String uuidString = c.getUUID().toString();
 //        mDatabase.delete(ProfileTable.NAME, ProfileTable.Cols.UUID + " = ?",
 //                new String[]{uuidString});
 //    }
@@ -105,7 +105,7 @@ public class ProfileManager {
 //
 //        if (searchTerm != null) {
 //            queryWhereClause = "BATCH LIKE '%" + searchTerm +
-//                    "%' OR ORDER LIKE '%" + searchTerm + "%'";
+//                    "%' OR POSITION LIKE '%" + searchTerm + "%'";
 //        } else {
 //            queryWhereClause = null;
 //        }

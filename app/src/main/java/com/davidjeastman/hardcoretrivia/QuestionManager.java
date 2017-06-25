@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.davidjeastman.hardcoretrivia.database.TriviaDbHelper;
 import com.davidjeastman.hardcoretrivia.database.TriviaCursorWrapper;
+import com.davidjeastman.hardcoretrivia.database.TriviaDbHelper;
 import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.QuestionTable;
 
 import org.json.JSONArray;
@@ -26,12 +26,19 @@ public class QuestionManager {
     public static final String TAG = "QuestionManager";
     public static final String APP_DIRECTORY = APP_NAME;
 
+    private static final int numTriplesInSet = 3;
+    private static final double SKILL_BOOST = 0.25;
+
     private static QuestionManager sQuestionManager;
 
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
+//    List<Question> questions;
+
     private QuestionManager(Context context) {
+//        questions = getQuestions();
+//        sortQuestions(questions);
         mContext = context.getApplicationContext();
         mDatabase = new TriviaDbHelper(mContext)
                 .getWritableDatabase();
@@ -46,9 +53,10 @@ public class QuestionManager {
 
     private static ContentValues getContentValues(Question Question) {
         ContentValues values = new ContentValues();
-        values.put(QuestionTable.Cols.UUID, Question.getId().toString());
+        values.put(QuestionTable.Cols._ID, Question.getId());
+        values.put(QuestionTable.Cols.UUID, Question.getUUID().toString());
         values.put(QuestionTable.Cols.TRIPLE, Question.getTriple());
-        values.put(QuestionTable.Cols.ORDER, Question.getOrder());
+        values.put(QuestionTable.Cols.POSITION, Question.getPosition());
         values.put(QuestionTable.Cols.CORRECT_ANSWER, Question.getCorrectAnswer());
         values.put(QuestionTable.Cols.ANSWER2, Question.getAnswer2());
         values.put(QuestionTable.Cols.ANSWER3, Question.getAnswer3());
@@ -82,44 +90,101 @@ public class QuestionManager {
 //    }
 //
 //    public void deleteQuestion(Question c) {
-//        String uuidString = c.getId().toString();
+//        String uuidString = c.getUUID().toString();
 //        mDatabase.delete(QuestionTable.NAME, QuestionTable.Cols.UUID + " = ?",
 //                new String[]{uuidString});
 //    }
 
-    public List<Question> getQuestions() {
-        return getQuestions(null);
-    }
+//    public List<Question> getQuestions() {
+//        List<Question> questions = new ArrayList<>();
+//        TriviaCursorWrapper cursor = queryQuestions(null, null);
+//        try {
+//            cursor.moveToFirst();
+//            while (!cursor.isAfterLast()) {
+//                questions.add(cursor.getQuestion());
+//                cursor.moveToNext();
+//            }
+//        } finally {
+//            cursor.close();
+//        }
+//        return questions;
+//    }
 
-    public List<Question> getQuestions(String searchTerm) {
-        String queryWhereClause;
+//    private static void sortQuestions(List<Question> questions) {
+//
+//        Collections.sort(questions, new Comparator<Question>() {
+//            @Override
+//            public int compare(Question o1, Question o2) {
+//
+//                Integer x1 = o1.getTriple();
+//                Integer x2 = o2.getTriple();
+//                int sComp = x1.compareTo(x2);
+//
+//                if (sComp != 0) {
+//                    return sComp;
+//                } else {
+//                    x1 = o1.getPosition();
+//                    x2 = o2.getPosition();
+//                    return x1.compareTo(x2);
+//                }
+//            }});
+//    }
 
-        List<Question> entries = new ArrayList<>();
+    public List<Question> getNextTripleSet(double skill) {
+        int numQuestions = 3 * numTriplesInSet;
+        List<Question> tripleSet = new ArrayList<>(numQuestions);
 
-        if (searchTerm != null) {
-            queryWhereClause = "BATCH LIKE '%" + searchTerm +
-                    "%' OR ORDER LIKE '%" + searchTerm + "%'";
-        } else {
-            queryWhereClause = null;
-        }
-
-        TriviaCursorWrapper cursor = queryQuestions(queryWhereClause, null);
+        TriviaCursorWrapper cursor = queryQuestions(
+                QuestionTable.Cols.QUESTION_SEEN + " = ?"
+                        + " AND " +
+                        QuestionTable.Cols.POSITION + " = ?"
+                ,
+                new String[]{"false", "1"}
+        );
         try {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                entries.add(cursor.getQuestion());
-                cursor.moveToNext();
+            if (cursor.getCount() == 0) {
+                Log.e(TAG, "No questions");
+                return null;
+            } else {
+                int t = 0; // number of skill appropriate triples
+                cursor.moveToFirst();
+                while (t < numTriplesInSet) {
+                    TriviaCursorWrapper cursor2 = queryQuestions(
+                            QuestionTable.Cols.TRIPLE + " = ?",
+                            new String[]{String.valueOf(cursor.getQuestion().getTriple())}
+                    );
+                    int difficultySum = 0;
+                    cursor2.moveToFirst();
+                    List<Question> tripleCandidates = new ArrayList<>(3);
+                    for (int i = 0; i < 3; i++) {
+                        tripleCandidates.add(cursor2.getQuestion());
+                        difficultySum += cursor2.getQuestion().getDifficulty();
+                        cursor2.moveToNext();
+                    }
+                    double averageDifficulty = (double) difficultySum / 3;
+                    Log.i(TAG, String.valueOf(averageDifficulty));
+                    if (averageDifficulty <= skill) {
+                        tripleSet.addAll(tripleCandidates);
+                        t++;
+                    }
+                    // Otherwise, skip the too-difficult triple and go on to the next
+                    if (cursor.isLast()) {
+                        Log.e(TAG, "Skill: "+ skill
+                                +". Not enough valid triples at this player's skill level. " +
+                                        "Boosting skill level by "+SKILL_BOOST+" and restarting.");
+                        skill = skill + SKILL_BOOST;
+                        tripleSet.clear();
+                        t = 0;
+                        cursor.moveToFirst();
+                        continue;
+                    }
+                    cursor.moveToNext();
+                }
+                return tripleSet;
             }
         } finally {
             cursor.close();
         }
-//        Collections.sort(entries, new Comparator<Question>() {
-//            @Override
-//            public int compare(Question e1, Question e2) {
-//                return e1.getTriple().compareTo(e2.getTriple());
-//            }
-//        });
-        return entries;
     }
 
     public List<Question> getQuestions(int tripleId) {
@@ -141,7 +206,7 @@ public class QuestionManager {
                 questions.add(2, cursor.getQuestion());
                 return questions;
             } else {
-                Log.e(TAG,"Not enough questions");
+                Log.e(TAG, "Not enough questions");
                 return null;
             }
         } finally {
@@ -150,7 +215,7 @@ public class QuestionManager {
     }
 
     public void updateQuestion(Question Question) {
-        String uuidString = Question.getId().toString();
+        String uuidString = Question.getUUID().toString();
         ContentValues values = getContentValues(Question);
         mDatabase.update(QuestionTable.NAME, values,
                 QuestionTable.Cols.UUID + " = ?",

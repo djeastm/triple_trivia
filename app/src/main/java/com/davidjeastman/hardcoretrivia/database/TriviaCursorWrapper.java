@@ -8,12 +8,6 @@ import com.davidjeastman.hardcoretrivia.Question;
 import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.QuestionTable;
 import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.ProfileTable;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -51,9 +45,10 @@ public class TriviaCursorWrapper extends CursorWrapper {
 
     public Question getQuestion() {
         // Built-in
+        int _id = getInt(getColumnIndex(QuestionTable.Cols._ID));
         String uuidString = getString(getColumnIndex(QuestionTable.Cols.UUID));
         int triple = getInt(getColumnIndex(QuestionTable.Cols.TRIPLE));
-        int order = getInt(getColumnIndex(QuestionTable.Cols.ORDER));
+        int position = getInt(getColumnIndex(QuestionTable.Cols.POSITION));
         String correctAnswer = getString(getColumnIndex(QuestionTable.Cols.CORRECT_ANSWER));
         String answer2 = getString(getColumnIndex(QuestionTable.Cols.ANSWER2));
         String answer3 = getString(getColumnIndex(QuestionTable.Cols.ANSWER3));
@@ -66,8 +61,9 @@ public class TriviaCursorWrapper extends CursorWrapper {
         String playerAnswer = getString(getColumnIndex(QuestionTable.Cols.PLAYER_ANSWER));
 
         Question question = new Question(UUID.fromString(uuidString));
+        question.setId(_id);
         question.setTriple(triple);
-        question.setOrder(order);
+        question.setPosition(position);
         question.setCorrectAnswer(correctAnswer);
         question.setAnswer2(answer2);
         question.setAnswer3(answer3);
@@ -79,21 +75,5 @@ public class TriviaCursorWrapper extends CursorWrapper {
         question.setPlayerAnswer(playerAnswer);
 
         return question;
-    }
-
-    private List<String> convertFromSQLString(String sqlString) {
-        if (sqlString != null) {
-            List<String> array = new ArrayList<>();
-            try {
-                JSONArray jsonArray = new JSONObject(sqlString).getJSONArray("itemList");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    array.add(jsonArray.getString(i));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return array;
-        } else return new ArrayList<>();
     }
 }
