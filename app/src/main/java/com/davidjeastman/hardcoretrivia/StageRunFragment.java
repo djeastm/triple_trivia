@@ -1,5 +1,6 @@
 package com.davidjeastman.hardcoretrivia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,15 +50,12 @@ public class StageRunFragment extends Fragment{
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-//        int tripleId = (int) getArguments().getSerializable(ARG_TRIPLE_ID);
         int skill = ProfileManager.get(getActivity()).getProfile().getSkill();
-//        List<Question> nextTripleSet = QuestionManager.get(getActivity()).getNextTripleSet(skill);
-
         mQuestions = QuestionManager.get(getActivity()).getNextTripleSet(skill);
 
-        for(int i = 0; i < mQuestions.size(); i++) {
-            Log.i(TAG, mQuestions.get(i).getQuestion());
-        }
+//        for(int i = 0; i < mQuestions.size(); i++) {
+//            Log.i(TAG, mQuestions.get(i).getQuestion());
+//        }
 
     }
 
@@ -68,16 +68,56 @@ public class StageRunFragment extends Fragment{
         mStageStatusTextView.setText(String.valueOf(stage)+" gameRun");
 
         Question thisQuestion = mQuestions.get(0);
+
         mQuestionTextView = v.findViewById(R.id.question_textview);
         mQuestionTextView.setText(thisQuestion.getQuestion());
+
+        final String correctAnswer = thisQuestion.getCorrectAnswer();
+
+        class Answer {
+            private boolean isCorrect;
+            private String questionString;
+
+            private Answer(boolean c, String q) {
+                isCorrect = c;
+                questionString = q;
+            }
+
+        }
+
+        ArrayList<Answer> answerBasket = new ArrayList<>();
+        answerBasket.add(new Answer(true, thisQuestion.getCorrectAnswer()));
+        answerBasket.add(new Answer(false, thisQuestion.getAnswer2()));
+        answerBasket.add(new Answer(false, thisQuestion.getAnswer3()));
+        answerBasket.add(new Answer(false, thisQuestion.getAnswer4()));
+
+        Collections.shuffle(answerBasket);
+
+        View.OnClickListener answerButtonClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button thisButton = (Button) v;
+                if (thisButton.getText().equals(correctAnswer))
+                    Toast.makeText(getActivity(), "Correct!", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(getActivity(), "Wrong!", Toast.LENGTH_SHORT).show();
+            }
+        };
+
         mAnswerButton1 = v.findViewById(R.id.answer_button_1);
-        mAnswerButton1.setText(thisQuestion.getCorrectAnswer());
+        mAnswerButton1.setText(answerBasket.get(0).questionString);
+        mAnswerButton1.setOnClickListener(answerButtonClick);
+
         mAnswerButton2 = v.findViewById(R.id.answer_button_2);
-        mAnswerButton2.setText(thisQuestion.getAnswer2());
+        mAnswerButton2.setText(answerBasket.get(1).questionString);
+        mAnswerButton2.setOnClickListener(answerButtonClick);
+
         mAnswerButton3 = v.findViewById(R.id.answer_button_3);
-        mAnswerButton3.setText(thisQuestion.getAnswer3());
+        mAnswerButton3.setText(answerBasket.get(2).questionString);
+        mAnswerButton3.setOnClickListener(answerButtonClick);
+
         mAnswerButton4 = v.findViewById(R.id.answer_button_4);
-        mAnswerButton4.setText(thisQuestion.getAnswer4());
+        mAnswerButton4.setText(answerBasket.get(3).questionString);
+        mAnswerButton4.setOnClickListener(answerButtonClick);
 
 
         return v;
