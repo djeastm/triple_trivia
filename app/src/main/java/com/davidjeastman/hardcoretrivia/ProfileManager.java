@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static android.R.attr.id;
+
 /**
  * Created by David Eastman on 6/25/2017.
  */
@@ -84,6 +86,14 @@ public class ProfileManager {
 //                new String[]{uuidString});
 //    }
 
+    public void updateProfile(Profile Profile) {
+        String uuidString = Profile.getId().toString();
+        ContentValues values = getContentValues(Profile);
+        mDatabase.update(ProfileTable.NAME, values,
+                ProfileTable.Cols.UUID + " = ?",
+                new String[]{uuidString});
+    }
+
 //    public List<Profile> getProfiles() {
 //        return getProfiles(null);
 //    }
@@ -119,11 +129,11 @@ public class ProfileManager {
 //        return entries;
 //    }
 
-    public Profile getProfile(UUID id) {
+    public Profile getProfile() {
 
         TriviaCursorWrapper cursor = queryProfiles(
-                ProfileTable.Cols.UUID + " = ?",
-                new String[]{id.toString()}
+                null,
+                new String[0]
         );
         try {
             if (cursor.getCount() == 0) {
@@ -134,14 +144,6 @@ public class ProfileManager {
         } finally {
             cursor.close();
         }
-    }
-
-    public void updateProfile(Profile Profile) {
-        String uuidString = Profile.getId().toString();
-        ContentValues values = getContentValues(Profile);
-        mDatabase.update(ProfileTable.NAME, values,
-                ProfileTable.Cols.UUID + " = ?",
-                new String[]{uuidString});
     }
 
     private TriviaCursorWrapper queryProfiles(String whereClause, String[] whereArgs) {

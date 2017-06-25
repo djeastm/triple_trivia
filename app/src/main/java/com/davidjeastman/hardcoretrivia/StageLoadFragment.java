@@ -52,7 +52,7 @@ public class StageLoadFragment extends Fragment {
             public void onFinish() {
                 StageRunFragment nextFrag= StageRunFragment.newInstance(stage);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.game_container, nextFrag,TAG)
+                        .replace(R.id.stage_container, nextFrag,TAG)
                         .commit();
             }
 

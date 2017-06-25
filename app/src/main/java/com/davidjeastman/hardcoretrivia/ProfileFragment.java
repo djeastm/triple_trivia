@@ -37,7 +37,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProfile = new Profile();
+        mProfile = ProfileManager.get(getActivity()).getProfile();
     }
 
     @Override

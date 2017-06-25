@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">HardcoreTrivia</string>
+
+    <string name="profile_setup_name_hint">Name</string>
+    <string name="profile_setup_location_hint">Location</string>
+    <string name="profile_setup_submit_button">Done</string>
+    <string name="profile_setup_notification_name">Need a name!</string>
+    <string name="profile_setup_notification_location">Need a location!</string>
+
     <string name="profile_name_label">Name</string>
     <string name="profile_location_label">Location</string>
     <string name="profile_level_label">Level</string>
@@ -9,6 +16,7 @@
     <string name="settings_label">Settings</string>
     <string name="about_label">About</string>
     <string name="play_button">Play</string>
+
     <string name="question_text_placeholder">This is a question text placeholder?</string>
     <string name="answer_button_1">Answer 1</string>
     <string name="answer_button_2">Answer 2</string>

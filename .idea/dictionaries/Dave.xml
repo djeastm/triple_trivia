@@ -2,6 +2,7 @@
   <dictionary name="Dave">
     <words>
       <w>constraintlayout</w>
+      <w>edittext</w>
       <w>hardcoretrivia</w>
       <w>imageview</w>
       <w>leaderboard</w>

@@ -20,12 +20,12 @@ public class StageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_stage);
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.game_container);
+        Fragment fragment = fm.findFragmentById(R.id.stage_container);
         if (fragment == null) {
             fragment = createFragment();
-            fm.beginTransaction().add(R.id.game_container, fragment).commit();
+            fm.beginTransaction().add(R.id.stage_container, fragment).commit();
         }
     }
 
