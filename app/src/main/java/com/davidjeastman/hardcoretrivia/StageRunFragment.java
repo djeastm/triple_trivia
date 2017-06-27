@@ -22,9 +22,8 @@ import java.util.List;
 public class StageRunFragment extends Fragment {
 
     private static final String TAG = "StageRunFragment";
-    private static final String ARG_STAGE_ID = "stage_id";
 
-    private TextView mStageStatusTextView;
+    private TextView mAppNameTextView;
     private TextView mQuestionTextView;
     private ImageView mCorrectBox;
 
@@ -33,7 +32,6 @@ public class StageRunFragment extends Fragment {
     private Button mAnswerButton3;
     private Button mAnswerButton4;
 
-    private int mStage;
     private List<Question> mQuestions; // Every mStage has three triples, making 9 questions
     private int mCurrentQuestionNumber;
     private Question mCurrentQuestion;
@@ -59,9 +57,8 @@ public class StageRunFragment extends Fragment {
         }
     };
 
-    public static StageRunFragment newInstance(int stageId) {
+    public static StageRunFragment newInstance() {
         Bundle args = new Bundle();
-        args.putInt(ARG_STAGE_ID, stageId);
         StageRunFragment fragment = new StageRunFragment();
         fragment.setArguments(args);
         return fragment;
@@ -72,9 +69,9 @@ public class StageRunFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mStage = getArguments().getInt(ARG_STAGE_ID, -1);
+        Profile profile = ProfileManager.get(getActivity()).getProfile();
 
-        int skill = ProfileManager.get(getActivity()).getProfile().getSkill();
+        int skill = profile.getSkill();
         mQuestions = QuestionManager.get(getActivity()).getNextTripleSet(skill);
         mCurrentQuestionNumber = 0;
     }
@@ -83,8 +80,8 @@ public class StageRunFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stage_run, container, false);
 
-        mStageStatusTextView = v.findViewById(R.id.stage_status_textview);
-        mStageStatusTextView.setText(String.valueOf(mStage) + " gameRun");
+        mAppNameTextView = v.findViewById(R.id.stage_status_textview);
+        mAppNameTextView.setText(R.string.app_name);
 
         mCurrentQuestion = mQuestions.get(mCurrentQuestionNumber);
         mQuestionTextView = v.findViewById(R.id.question_textview);
@@ -119,6 +116,7 @@ public class StageRunFragment extends Fragment {
         mAnswerButton4.setOnClickListener(answerButtonClick);
 
         mCurrentQuestion.setQuestionSeen(true);
+        QuestionManager.get(getActivity()).updateQuestion(mCurrentQuestion);
     }
 
     private void getNextQuestion() {
@@ -131,7 +129,7 @@ public class StageRunFragment extends Fragment {
     }
 
     private void loadNextStage() {
-        StageEndFragment nextFrag= StageEndFragment.newInstance(mStage,(ArrayList) mQuestions);
+        StageEndFragment nextFrag= StageEndFragment.newInstance((ArrayList) mQuestions);
         getFragmentManager().beginTransaction()
                 .replace(R.id.stage_container, nextFrag,TAG)
                 .commit();

@@ -20,7 +20,6 @@ import java.util.List;
 public class StageEndFragment extends Fragment {
 
     private static final String TAG = "StageEndFragment";
-    private static final String ARG_STAGE_ID = "stage_id";
     private static final String ARG_QUESTION_LIST_ID = "question_list_id";
     int mStage;
 
@@ -32,9 +31,29 @@ public class StageEndFragment extends Fragment {
     private int mStagePoints;
     private int mTimeBonusPoints;
 
-    public static StageEndFragment newInstance(int stageId, ArrayList<Question> questions) {
+    private View.OnClickListener continueTryAgainButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button thisButton = (Button) v;
+
+            if (thisButton.getText().equals(getString(R.string.continue_button))) {
+                StageLoadFragment nextFrag= StageLoadFragment.newInstance();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.stage_container, nextFrag,TAG)
+                        .commit();
+            } else {
+                StageLoadFragment nextFrag= StageLoadFragment.newInstance();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.stage_container, nextFrag,TAG)
+                        .commit();
+            }
+
+
+        }
+    };
+
+    public static StageEndFragment newInstance(ArrayList<Question> questions) {
         Bundle args = new Bundle();
-        args.putInt(ARG_STAGE_ID, stageId);
         args.putSerializable(ARG_QUESTION_LIST_ID, questions);
         StageEndFragment fragment = new StageEndFragment();
         fragment.setArguments(args);
@@ -46,8 +65,9 @@ public class StageEndFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mProfilePoints = ProfileManager.get(getActivity()).getProfile().getPoints();
-        mStage = getArguments().getInt(ARG_STAGE_ID, -1);
+        Profile profile = ProfileManager.get(getActivity()).getProfile();
+        mProfilePoints = profile.getPoints();
+        mStage = profile.getStage();
 
         //for (Question q : mQuestions) Log.i(TAG,q.getQuestion());
 
@@ -70,9 +90,9 @@ public class StageEndFragment extends Fragment {
         calculateScore();
 
         double threshold = mQuestions.size() * .7;
-        boolean isPassed = mNumCorrect > threshold;
+        boolean isStagePassed = mNumCorrect > threshold;
 
-        if (isPassed) {
+        if (isStagePassed) {
             v.getRootView()
                     .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.passColorPrimary));
             mStageAppNameTextView
@@ -83,7 +103,12 @@ public class StageEndFragment extends Fragment {
             mStageEndContinueTryAgainButton
                     .setText(R.string.continue_button);
 
-            ProfileManager.get(getActivity()).getProfile().increaseSkill();
+            ProfileManager pm = ProfileManager.get(getActivity());
+            Profile profile = pm.getProfile();
+            profile.increaseSkill();
+            profile.increaseStage();
+            pm.updateProfile(profile);
+
         } else {
             v.getRootView()
                     .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.failColorPrimary));
@@ -114,6 +139,7 @@ public class StageEndFragment extends Fragment {
         mStageEndTimeBonusPtsAbbrevTextView
                 .setText(String.valueOf(mTimeBonusPoints));
 
+        mStageEndContinueTryAgainButton.setOnClickListener(continueTryAgainButtonClick);
 
         return v;
     }
@@ -129,7 +155,5 @@ public class StageEndFragment extends Fragment {
                 mStagePoints = mStagePoints + q.getDifficulty() * 100;
             }
         }
-
-
     }
 }

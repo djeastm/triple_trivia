@@ -2,6 +2,8 @@ package com.davidjeastman.hardcoretrivia;
 
 import java.util.UUID;
 
+import static com.davidjeastman.hardcoretrivia.R.string.stage;
+
 /**
  * Created by David Eastman on 6/22/2017.
  */
@@ -66,6 +68,8 @@ public class Profile {
     public void setStage(int stage) {
         mStage = stage;
     }
+
+    public void increaseStage() {mStage++;}
 
     public int getLevel() {
         return mLevel;

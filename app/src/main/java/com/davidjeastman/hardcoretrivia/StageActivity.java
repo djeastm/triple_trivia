@@ -30,8 +30,7 @@ public class StageActivity extends AppCompatActivity {
     }
 
     protected Fragment createFragment() {
-        int stageId = (int) getIntent().getSerializableExtra(EXTRA_STAGE_ID);
-        return StageLoadFragment.newInstance(stageId);
+        return StageLoadFragment.newInstance();
     }
 
 }
