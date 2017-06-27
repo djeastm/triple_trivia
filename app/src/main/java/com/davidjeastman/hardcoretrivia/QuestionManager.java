@@ -27,7 +27,6 @@ public class QuestionManager {
     public static final String APP_DIRECTORY = APP_NAME;
 
     private static final int numTriplesInSet = 3;
-    private static final double SKILL_BOOST = 0.25;
 
     private static QuestionManager sQuestionManager;
 
@@ -169,10 +168,11 @@ public class QuestionManager {
                     }
                     // Otherwise, skip the too-difficult triple and go on to the next
                     if (cursor.isLast()) {
+                        double skillAdjust = Profile.SKILL_ADJUST;
                         Log.e(TAG, "Skill: "+ skill
                                 +". Not enough valid triples at this player's skill level. " +
-                                        "Boosting skill level by "+SKILL_BOOST+" and restarting.");
-                        skill = skill + SKILL_BOOST;
+                                        "Boosting skill level by "+skillAdjust+" and restarting.");
+                        skill = skill + skillAdjust;
                         tripleSet.clear();
                         t = 0;
                         cursor.moveToFirst();

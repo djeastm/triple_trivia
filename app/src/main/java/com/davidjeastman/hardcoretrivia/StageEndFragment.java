@@ -66,7 +66,6 @@ public class StageEndFragment extends Fragment {
         TextView mStageEndTimeBonusPtsAbbrevTextView = v.findViewById(R.id.stage_end_time_bonus_points_abbrev_textview);
         Button mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
 
-        int skill = ProfileManager.get(getActivity()).getProfile().getSkill();
         mQuestions = (ArrayList) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
         calculateScore();
 
@@ -83,6 +82,8 @@ public class StageEndFragment extends Fragment {
                             + " " + getString(R.string.completed));
             mStageEndContinueTryAgainButton
                     .setText(R.string.continue_button);
+
+            ProfileManager.get(getActivity()).getProfile().increaseSkill();
         } else {
             v.getRootView()
                     .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.failColorPrimary));
@@ -99,6 +100,8 @@ public class StageEndFragment extends Fragment {
 
             mStagePoints = 0;
             mTimeBonusPoints = 0;
+
+            ProfileManager.get(getActivity()).getProfile().reduceSkill();
         }
 
         mStageEndCorrectAnswersTextView

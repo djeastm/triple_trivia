@@ -7,6 +7,12 @@ import java.util.UUID;
  */
 
 public class Profile {
+
+    private static final int SKILL_START = 1;
+    private static final int SKILL_MAX = 3;
+
+    public static final double SKILL_ADJUST = 0.25;
+
     private UUID mId;
     private String mName;
     private String mLocation;
@@ -24,7 +30,7 @@ public class Profile {
         mLocation = "Nowhere";
         mStage = 1;
         mLevel = 1;
-        mSkill = 1;
+        mSkill = SKILL_START;
         mPoints = 0;
         mRank = 999;
     }
@@ -76,6 +82,10 @@ public class Profile {
     public void setSkill(int skill) {
         mSkill = skill;
     }
+
+    public void reduceSkill() {mSkill = mSkill > 1 ? mSkill-- : mSkill;}
+
+    public void increaseSkill() {mSkill = mSkill < SKILL_MAX ? mSkill++ : mSkill;}
 
     public int getPoints() {
         return mPoints;
