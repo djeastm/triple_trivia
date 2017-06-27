@@ -1,12 +1,13 @@
 package com.davidjeastman.hardcoretrivia;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Created by David Eastman on 6/24/2017.
  */
 
-public class Question {
+public class Question implements Serializable{
     public static final String TAG = "Question";
 
     private int mId;

@@ -162,7 +162,7 @@ public class QuestionManager {
                         cursor2.moveToNext();
                     }
                     double averageDifficulty = (double) difficultySum / 3;
-                    Log.i(TAG, String.valueOf(averageDifficulty));
+//                    Log.i(TAG, String.valueOf(averageDifficulty));
                     if (averageDifficulty <= skill) {
                         tripleSet.addAll(tripleCandidates);
                         t++;

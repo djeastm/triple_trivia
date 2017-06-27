@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 /**
  * Created by David Eastman on 6/22/2017.
  */
@@ -20,7 +18,7 @@ public class StageLoadFragment extends Fragment {
     private static final String ARG_STAGE_ID = "stage_id";
 
     private TextView mTestTextView;
-    private int stage;
+    private int mStage;
 
     public static StageLoadFragment newInstance(int stageId) {
         Bundle args = new Bundle();
@@ -41,8 +39,8 @@ public class StageLoadFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_stage_load, container, false);
         mTestTextView = v.findViewById(R.id.game_test_text_view);
 
-        stage = getArguments().getInt(ARG_STAGE_ID,-1);
-        mTestTextView.setText(String.valueOf(stage));
+        mStage = getArguments().getInt(ARG_STAGE_ID,-1);
+        mTestTextView.setText(String.valueOf(mStage));
 
         new CountDownTimer(1000, 1000) {
             @Override
@@ -52,7 +50,7 @@ public class StageLoadFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                StageRunFragment nextFrag= StageRunFragment.newInstance(stage);
+                StageRunFragment nextFrag= StageRunFragment.newInstance(mStage);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.stage_container, nextFrag,TAG)
                         .commit();

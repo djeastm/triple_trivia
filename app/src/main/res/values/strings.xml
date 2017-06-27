@@ -23,4 +23,16 @@
     <string name="answer_button_3">Answer 3</string>
     <string name="answer_button_4">Answer 4</string>
 
+    <string name="game_over">GAME OVER</string>
+    <string name="stage">STAGE</string>
+    <string name="completed">COMPLETED</string>
+    <string name="better_luck">Better luck next time!</string>
+    <string name="correct_answers">Correct Answers</string>
+    <string name="next_level_score">NEXT LEVEL SCORE</string>
+    <string name="time_bonus">Time Bonus</string>
+    <string name="points">Points</string>
+    <string name="points_abbrev">PTS</string>
+    <string name="try_again_button">TRY AGAIN</string>
+    <string name="continue_button">CONTINUE</string>
+
 </resources>
