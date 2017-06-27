@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/stage_app_name_textview"
             android:text="@string/app_name"
-            android:background="@color/colorAccent"
+            android:background="@color/appColorAccent"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:gravity="center"
@@ -41,6 +41,10 @@
             app:layout_constraintTop_toBottomOf="@id/stage_app_name_textview"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
             />
 
         <TextView
@@ -54,6 +58,10 @@
             app:layout_constraintTop_toBottomOf="@id/stage_end_message_textview"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
             />
 
         <TextView
@@ -67,6 +75,10 @@
             app:layout_constraintTop_toBottomOf="@id/stage_end_subtitle_textview"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
             />
 
         <TextView
@@ -80,12 +92,16 @@
             app:layout_constraintTop_toBottomOf="@id/stage_end_correct_answers_textview"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
             />
 
         <TextView
             android:id="@+id/stage_end_points_fraction_textview"
             android:text=""
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/appColorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:gravity="center"
@@ -94,6 +110,10 @@
             app:layout_constraintTop_toBottomOf="@id/stage_end_next_level_score_textview"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
             />
 
 
@@ -105,30 +125,36 @@
             app:layout_constraintTop_toBottomOf="@id/stage_end_points_fraction_textview"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="24dp"
             >
 
             <TextView
                 android:id="@+id/stage_end_time_bonus_textview"
                 android:text="@string/time_bonus"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="32dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/stage_end_time_bonus_points_abbrev_textview"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="32dp"
                 />
 
             <TextView
                 android:id="@+id/stage_end_time_bonus_points_abbrev_textview"
                 android:text="@string/points_abbrev"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="32dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/stage_end_time_bonus_textview"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginEnd="32dp"
                 />
         </android.support.constraint.ConstraintLayout>
 
@@ -139,30 +165,37 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/stage_end_time_bonus_constraintlayout"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="24dp"
+            >
 
             <TextView
                 android:id="@+id/stage_end_points_textview"
                 android:text="@string/points"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="32dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/stage_end_points_points_abbrev_textview"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="32dp"
                 />
 
             <TextView
                 android:id="@+id/stage_end_points_points_abbrev_textview"
                 android:text="@string/points_abbrev"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="32dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/stage_end_points_textview"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginEnd="32dp"
                 />
         </android.support.constraint.ConstraintLayout>
 
@@ -170,11 +203,15 @@
         <Button
             android:id="@+id/stage_end_continue_try_again_button"
             android:text=""
-            android:layout_width="88dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/stage_end_points_constraintlayout"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="48dp"/>
 
     </android.support.constraint.ConstraintLayout>
 

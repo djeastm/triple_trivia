@@ -16,11 +16,23 @@
         <!-- theme customizations -->
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
-        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimary">@color/appColorPrimary</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorPrimaryDark">@color/appColorPrimaryDark</item>
         <!--   theme UI controls like checkboxes and text fields -->
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorAccent">@color/appColorAccent</item>
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+    <style name="Passed" parent="AppTheme">
+        <item name="android:colorPrimary">@color/passColorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/appColorPrimaryDark</item>
+        <item name="android:colorAccent">@color/appColorAccent</item>
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+    <style name="Failed" parent="AppTheme">
+        <item name="android:colorPrimary">@color/appColorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/appColorPrimaryDark</item>
+        <item name="android:colorAccent">@color/appColorAccent</item>
         <item name="android:statusBarColor">@color/black</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
