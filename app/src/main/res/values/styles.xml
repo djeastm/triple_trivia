@@ -3,6 +3,7 @@
         <item name="android:colorPrimary">@color/mediumBlue</item>
         <item name="android:colorPrimaryDark">@color/darkBlue</item>
         <item name="android:colorAccent">@color/lightBlue</item>
+        <item name="android:statusBarColor">@color/black</item>
     </style>
     <style name="AppNameBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textStyle">bold</item>
@@ -21,16 +22,16 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
     <style name="Passed" parent="AppTheme">
-        <item name="android:colorPrimary">@color/mediumGreen</item>
-        <item name="android:colorPrimaryDark">@color/darkGreen</item>
-        <item name="android:colorAccent">@color/lightGreen</item>
-        <item name="android:statusBarColor">@color/lightGreen</item>
+        <item name="colorPrimary">@color/mediumGreen</item>
+        <item name="colorPrimaryDark">@color/darkGreen</item>
+        <item name="colorAccent">@color/lightGreen</item>
+        <item name="android:statusBarColor">@color/mediumGreen</item>
     </style>
     <style name="Failed" parent="AppTheme">
-        <item name="android:colorPrimary">@color/mediumRed</item>
-        <item name="android:colorPrimaryDark">@color/darkRed</item>
-        <item name="android:colorAccent">@color/lightRed</item>
-        <item name="android:statusBarColor">@color/lightRed</item>
+        <item name="colorPrimary">@color/mediumRed</item>
+        <item name="colorPrimaryDark">@color/darkRed</item>
+        <item name="colorAccent">@color/lightRed</item>
+        <item name="android:statusBarColor">@color/mediumRed</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>

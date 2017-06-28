@@ -125,11 +125,11 @@ public class StageRunFragment extends Fragment {
             mCurrentQuestion = mQuestions.get(++mCurrentQuestionNumber);
         else {
             Log.e(TAG, "No more questions. End stage.");
-            loadNextStage();
+            loadEndStage();
         }
     }
 
-    private void loadNextStage() {
+    private void loadEndStage() {
         StageEndFragment nextFrag= StageEndFragment.newInstance((ArrayList) mQuestions);
         getFragmentManager().beginTransaction()
                 .replace(R.id.stage_container, nextFrag,TAG)

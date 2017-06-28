@@ -3,14 +3,21 @@ package com.davidjeastman.hardcoretrivia;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.attr.entries;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -23,6 +30,9 @@ public class StageEndFragment extends Fragment {
     private static final String KEY_UPDATED = "updated";
 
     private List<Question> mQuestions;
+
+    private RecyclerView mQuestionRecyclerView;
+    private QuestionAdapter mAdapter;
 
     private int mStage;
     private int mProfilePoints;
@@ -71,6 +81,8 @@ public class StageEndFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stage_end, container, false);
 
+        DrawerLayout mDrawerLayout = v.findViewById(R.id.drawer_layout);
+
         TextView mStageAppNameTextView = v.findViewById(R.id.stage_app_name_textview);
         TextView mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
         TextView mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
@@ -81,6 +93,17 @@ public class StageEndFragment extends Fragment {
         Button mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
 
         mQuestions = (ArrayList) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
+
+        mQuestionRecyclerView = v.findViewById(R.id.question_recycler_view);
+        mQuestionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if (mAdapter == null) {
+            mAdapter = new QuestionAdapter(mQuestions);
+            mQuestionRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setQuestions(mQuestions);
+            mAdapter.notifyDataSetChanged();
+        }
 
         boolean isStagePassed = calculateScore();
         if (!mIsUpdated) updateProfile(isStagePassed);
@@ -166,6 +189,63 @@ public class StageEndFragment extends Fragment {
             mTimeBonusPoints = 0;
 
             profile.reduceSkill();
+        }
+    }
+
+    private class QuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private Question mQuestion;
+
+        private TextView mQuestionTextView;
+        private TextView mCorrectAnswerTextView;
+
+
+        public QuestionHolder(View v) {
+            super(v);
+
+            mQuestionTextView = v.findViewById(R.id.list_item_question_textview);
+            mCorrectAnswerTextView = v.findViewById(R.id.list_item_correct_answer_textview);
+        }
+
+        public void bindEntry(Question question) {
+            mQuestion = question;
+            mQuestionTextView.setText(mQuestion.getQuestion());
+            mCorrectAnswerTextView.setText(mQuestion.getCorrectAnswer());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getContext(), "Clicked!", Toast.LENGTH_SHORT);
+        }
+    }
+    private class QuestionAdapter extends RecyclerView.Adapter<QuestionHolder> {
+
+
+        public QuestionAdapter(List<Question> questions) {
+            mQuestions = questions;
+        }
+
+        @Override
+        public QuestionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            View view = layoutInflater
+                    .inflate(R.layout.list_item_question, parent, false);
+            return new QuestionHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(QuestionHolder holder, int position) {
+            Question question = mQuestions.get(position);
+            holder.bindEntry(question);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mQuestions.size();
+        }
+
+        public void setQuestions(List<Question> questions) {
+            mQuestions = questions;
         }
     }
 }
