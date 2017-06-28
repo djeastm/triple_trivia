@@ -19,7 +19,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewPager = (ViewPager) findViewById(R.id.main_view_pager);
+        mViewPager = findViewById(R.id.main_view_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentPagerAdapter(fragmentManager) {
             @Override

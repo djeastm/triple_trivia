@@ -1,10 +1,8 @@
 package com.davidjeastman.hardcoretrivia;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,9 +87,9 @@ public class StageEndFragment extends Fragment {
 
         if (isStagePassed) {
             v.getRootView()
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.passColorPrimary));
+                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageAppNameTextView
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.passColorPrimary));
+                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageEndMessageTextView
                     .setText(getString(R.string.stage) + " " + String.valueOf(mStage)
                             + " " + getString(R.string.completed));
@@ -100,15 +98,15 @@ public class StageEndFragment extends Fragment {
 
         } else {
             v.getRootView()
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.failColorPrimary));
+                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumRed));
             mStageAppNameTextView
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.failColorPrimary));
+                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumRed));
             mStageEndMessageTextView
                     .setText(R.string.game_over);
             mStageEndSubtitleTextView
                     .setText(R.string.better_luck);
             mStageEndPointsFractionTextView
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.failColorPrimaryDark));
+                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.darkRed));
             mStageEndContinueTryAgainButton
                     .setText(R.string.try_again_button);
         }
@@ -156,7 +154,6 @@ public class StageEndFragment extends Fragment {
         ProfileManager pm = ProfileManager.get(getActivity());
         Profile profile = pm.getProfile();
         if (isStagePassed) {
-
             profile.increaseSkill();
             profile.increaseStage();
 

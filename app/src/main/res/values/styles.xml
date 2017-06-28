@@ -1,42 +1,28 @@
-<!--<resources>-->
-
-    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--</style>-->
-
-<!--</resources>-->
-    <!-- res/values/styles.xml -->
 <resources>
-    <!-- your theme inherits from the material theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- theme customizations -->
-        <!-- Main theme colors -->
-        <!--   your app branding color for the app bar -->
-        <item name="android:colorPrimary">@color/appColorPrimary</item>
-        <!--   darker variant for the status bar and contextual app bars -->
-        <item name="android:colorPrimaryDark">@color/appColorPrimaryDark</item>
-        <!--   theme UI controls like checkboxes and text fields -->
-        <item name="android:colorAccent">@color/appColorAccent</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:colorPrimary">@color/mediumBlue</item>
+        <item name="android:colorPrimaryDark">@color/darkBlue</item>
+        <item name="android:colorAccent">@color/lightBlue</item>
+    </style>
+    <style name="StageRunButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/mediumBlue</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="ProfilePlayButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_play</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="Passed" parent="AppTheme">
-        <item name="android:colorPrimary">@color/passColorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/appColorPrimaryDark</item>
-        <item name="android:colorAccent">@color/appColorAccent</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:colorPrimary">@color/mediumGreen</item>
+        <item name="android:colorPrimaryDark">@color/darkGreen</item>
+        <item name="android:colorAccent">@color/lightGreen</item>
     </style>
     <style name="Failed" parent="AppTheme">
-        <item name="android:colorPrimary">@color/appColorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/appColorPrimaryDark</item>
-        <item name="android:colorAccent">@color/appColorAccent</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:colorPrimary">@color/mediumRed</item>
+        <item name="android:colorPrimaryDark">@color/darkRed</item>
+        <item name="android:colorAccent">@color/lightRed</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
-
 </resources>

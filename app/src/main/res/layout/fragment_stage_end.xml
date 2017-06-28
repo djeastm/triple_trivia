@@ -19,10 +19,10 @@
         <TextView
             android:id="@+id/stage_app_name_textview"
             android:text="@string/app_name"
-            android:background="@color/appColorAccent"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:gravity="center"
+            android:elevation="2dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"
@@ -101,7 +101,6 @@
         <TextView
             android:id="@+id/stage_end_points_fraction_textview"
             android:text=""
-            android:background="@color/appColorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:gravity="center"

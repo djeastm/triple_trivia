@@ -3,13 +3,13 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#DDDDDD</color>
-    <color name="appColorPrimary">#03a9f4</color>
-    <color name="appColorPrimaryDark">#007ac1</color>
-    <color name="appColorAccent">#fbc02d</color>
-    <color name="passColorPrimary">#66bb6a</color>
-    <color name="passColorPrimaryDark">#338a3e</color>
-    <color name="passColorAccent">#98ee99</color>
-    <color name="failColorPrimary">#e91e63</color>
-    <color name="failColorPrimaryDark">#b0003a</color>
-    <color name="failColorAccent">#ff6090</color>
+    <color name="mediumBlue">#5c6bc0</color>
+    <color name="darkBlue">#26418f</color>
+    <color name="lightBlue">#8e99f3</color>
+    <color name="mediumGreen">#66bb6a</color>
+    <color name="darkGreen">#338a3e</color>
+    <color name="lightGreen">#98ee99</color>
+    <color name="mediumRed">#e91e63</color>
+    <color name="darkRed">#b0003a</color>
+    <color name="lightRed">#ff6090</color>
 </resources>

@@ -1,17 +1,13 @@
 package com.davidjeastman.hardcoretrivia;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -30,8 +26,6 @@ public class ProfileFragment extends Fragment {
     private TextView mRankField;
 
     private Button mPlayButton;
-
-    private boolean mProfileUpdated;
 
     public static ProfileFragment newInstance() {
         Bundle args = new Bundle();
@@ -86,7 +80,8 @@ public class ProfileFragment extends Fragment {
         mNameField.setText(mProfile.getName());
         mLocationField.setText(mProfile.getLocation());
         mLevelField.setText(String.valueOf(mProfile.getLevel()));
-        mPointsField.setText(String.valueOf(mProfile.getPoints()));
+        mPointsField.setText(String.valueOf(mProfile.getPoints())
+                + " " + getResources().getString(R.string.profile_points_label));
         mRankField.setText(String.valueOf(mProfile.getRank()));
     }
 }
