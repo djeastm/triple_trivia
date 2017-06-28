@@ -141,9 +141,9 @@ public class QuestionManager {
                 new String[]{"false", "1"}
         );
         try {
-            if (cursor.getCount() == 0) {
+            if (cursor.getCount() < 3) {
                 Log.e(TAG, "No questions");
-                return null;
+                return tripleSet;
             } else {
                 int t = 0; // number of skill appropriate triples
                 cursor.moveToFirst();
@@ -169,9 +169,9 @@ public class QuestionManager {
                     // Otherwise, skip the too-difficult triple and go on to the next
                     if (cursor.isLast()) {
                         double skillAdjust = Profile.SKILL_ADJUST;
-                        Log.e(TAG, "Skill: "+ skill
-                                +". Not enough valid triples at this player's skill level. " +
-                                        "Boosting skill level by "+skillAdjust+" and restarting.");
+                        Log.e(TAG, "Skill: " + skill
+                                + ". Not enough valid triples at this player's skill level. " +
+                                "Boosting skill level by " + skillAdjust + " and restarting.");
                         skill = skill + skillAdjust;
                         tripleSet.clear();
                         t = 0;

@@ -17,6 +17,7 @@
         app:layout_constraintLeft_toLeftOf="parent">
 
         <TextView
+            style="@style/AppNameBar"
             android:id="@+id/stage_app_name_textview"
             android:text="@string/app_name"
             android:layout_width="0dp"

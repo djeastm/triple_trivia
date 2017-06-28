@@ -82,17 +82,18 @@ public class StageRunFragment extends Fragment {
 
         mAppNameTextView = v.findViewById(R.id.stage_status_textview);
         mAppNameTextView.setText(R.string.app_name);
+        if (mQuestions.size() == 0 ) Toast.makeText(getContext(), "Not enough questions!", Toast.LENGTH_LONG).show();
+        else {
+            mCurrentQuestion = mQuestions.get(mCurrentQuestionNumber);
+            mQuestionTextView = v.findViewById(R.id.question_textview);
 
-        mCurrentQuestion = mQuestions.get(mCurrentQuestionNumber);
-        mQuestionTextView = v.findViewById(R.id.question_textview);
+            mAnswerButton1 = v.findViewById(R.id.answer_button_1);
+            mAnswerButton2 = v.findViewById(R.id.answer_button_2);
+            mAnswerButton3 = v.findViewById(R.id.answer_button_3);
+            mAnswerButton4 = v.findViewById(R.id.answer_button_4);
 
-        mAnswerButton1 = v.findViewById(R.id.answer_button_1);
-        mAnswerButton2 = v.findViewById(R.id.answer_button_2);
-        mAnswerButton3 = v.findViewById(R.id.answer_button_3);
-        mAnswerButton4 = v.findViewById(R.id.answer_button_4);
-
-        updateUI();
-
+            updateUI();
+        }
         return v;
     }
 
