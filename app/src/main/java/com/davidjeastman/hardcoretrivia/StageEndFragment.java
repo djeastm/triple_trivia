@@ -1,5 +1,6 @@
 package com.davidjeastman.hardcoretrivia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -84,7 +85,6 @@ public class StageEndFragment extends Fragment {
         mQuestions = (ArrayList) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
 
         boolean isStagePassed = calculateScore();
-
         if (!mIsUpdated) updateProfile(isStagePassed);
 
         if (isStagePassed) {
@@ -111,8 +111,6 @@ public class StageEndFragment extends Fragment {
                     .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.failColorPrimaryDark));
             mStageEndContinueTryAgainButton
                     .setText(R.string.try_again_button);
-
-
         }
 
         mStageEndCorrectAnswersTextView
@@ -133,7 +131,7 @@ public class StageEndFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        Log.i(TAG, "onSaveInstanceState");
+
         savedInstanceState.putBoolean(KEY_UPDATED, mIsUpdated);
     }
 
@@ -142,7 +140,6 @@ public class StageEndFragment extends Fragment {
         mStagePoints = 0;
         for (Question q : mQuestions) {
             if (q.isPlayerCorrect()) {
-                Log.i(TAG, String.valueOf(mNumCorrect));
                 mNumCorrect++;
                 mStagePoints = mStagePoints + q.getDifficulty() * 100;
             }
@@ -151,15 +148,15 @@ public class StageEndFragment extends Fragment {
         double threshold = mQuestions.size() * .7;
         boolean isStagePassed = mNumCorrect > threshold;
 
-
         return isStagePassed;
     }
 
     private void updateProfile(boolean isStagePassed) {
         mIsUpdated = true;
+        ProfileManager pm = ProfileManager.get(getActivity());
+        Profile profile = pm.getProfile();
         if (isStagePassed) {
-            ProfileManager pm = ProfileManager.get(getActivity());
-            Profile profile = pm.getProfile();
+
             profile.increaseSkill();
             profile.increaseStage();
 
@@ -171,7 +168,7 @@ public class StageEndFragment extends Fragment {
             mStagePoints = 0;
             mTimeBonusPoints = 0;
 
-            ProfileManager.get(getActivity()).getProfile().reduceSkill();
+            profile.reduceSkill();
         }
     }
 }

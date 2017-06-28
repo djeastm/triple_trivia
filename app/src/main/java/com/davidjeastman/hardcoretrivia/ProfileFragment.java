@@ -1,13 +1,17 @@
 package com.davidjeastman.hardcoretrivia;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -15,6 +19,7 @@ import android.widget.TextView;
 
 public class ProfileFragment extends Fragment {
 
+    private static final String TAG = "ProfileFragment";
     private static final String ARG_PROFILE_ID = "profile_id";
 
     private Profile mProfile;
@@ -25,6 +30,8 @@ public class ProfileFragment extends Fragment {
     private TextView mRankField;
 
     private Button mPlayButton;
+
+    private boolean mProfileUpdated;
 
     public static ProfileFragment newInstance() {
         Bundle args = new Bundle();
@@ -45,15 +52,14 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mNameField = v.findViewById(R.id.profile_name_text_view);
-        mNameField.setText(mProfile.getName());
+
         mLocationField = v.findViewById(R.id.profile_location_text_view);
-        mLocationField.setText(mProfile.getLocation());
+
         mLevelField = v.findViewById(R.id.profile_level_text_view);
-        mLevelField.setText(String.valueOf(mProfile.getLevel()));
+
         mPointsField = v.findViewById(R.id.profile_points_text_view);
-        mPointsField.setText(String.valueOf(mProfile.getPoints()));
+
         mRankField = v.findViewById(R.id.profile_rank_text_view);
-        mRankField.setText(String.valueOf(mProfile.getRank()));
 
         mPlayButton = v.findViewById(R.id.play_button);
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +71,22 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
+        updateUI();
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    private void updateUI() {
+        mProfile = ProfileManager.get(getActivity()).getProfile();
+        mNameField.setText(mProfile.getName());
+        mLocationField.setText(mProfile.getLocation());
+        mLevelField.setText(String.valueOf(mProfile.getLevel()));
+        mPointsField.setText(String.valueOf(mProfile.getPoints()));
+        mRankField.setText(String.valueOf(mProfile.getRank()));
     }
 }
