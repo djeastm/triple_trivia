@@ -3,6 +3,7 @@ package com.davidjeastman.tufftrivia;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,6 +80,7 @@ public class StageEndFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_stage_end, container, false);
 
         DrawerLayout mDrawerLayout = v.findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         TextView mStageAppNameTextView = v.findViewById(R.id.app_name_textview);
         TextView mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);

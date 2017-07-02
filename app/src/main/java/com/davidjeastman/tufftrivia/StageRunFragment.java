@@ -27,18 +27,14 @@ import java.util.List;
 public class StageRunFragment extends Fragment {
 
     private static final String TAG = "StageRunFragment";
-
+    Button[] allButtons = new Button[4];
     private TextView mAppNameTextView;
     private TextView mQuestionTextView;
     private ImageView mCorrectBox;
-
     private Button mAnswerButton1;
     private Button mAnswerButton2;
     private Button mAnswerButton3;
     private Button mAnswerButton4;
-
-    Button[] allButtons = new Button[4];
-
     private ConstraintSet mPrepostConstraintSet = new ConstraintSet();
     private ConstraintSet mPlayConstraintSet = new ConstraintSet();
     private ConstraintLayout mConstraintLayout;
@@ -47,7 +43,7 @@ public class StageRunFragment extends Fragment {
     private List<Question> mQuestions; // Every mStage has three triples, making 9 questions
     private int mCurrentQuestionNumber;
     private Question mCurrentQuestion;
-
+    private boolean isRoundOver;
     private View.OnClickListener answerButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -73,7 +69,6 @@ public class StageRunFragment extends Fragment {
             endQuestion();
         }
     };
-    private boolean isRoundOver;
 
     public static StageRunFragment newInstance() {
         Bundle args = new Bundle();
@@ -110,6 +105,7 @@ public class StageRunFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 for (Question q : mQuestions) {
+
                     q.setQuestionSeen(false);
                     q.setPlayerAnswer(q.getCorrectAnswer());
                     q.setPlayerCorrect(true);
@@ -171,6 +167,7 @@ public class StageRunFragment extends Fragment {
             public void onTick(long l) {
 
             }
+
             @Override
             public void onFinish() {
 
