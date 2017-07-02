@@ -1,20 +1,18 @@
 package com.davidjeastman.hardcoretrivia;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.transition.AutoTransition;
+import android.support.transition.Transition;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,7 +41,10 @@ public class StageRunFragment extends Fragment {
 
     Button[] allButtons = new Button[4];
 
-    private ConstraintLayout mStageBottomConstraintlayout;
+    private ConstraintSet mPrepostConstraintSet = new ConstraintSet();
+    private ConstraintSet mPlayConstraintSet = new ConstraintSet();
+    private ConstraintLayout mConstraintLayout;
+    private boolean isPrePost;
 
     private List<Question> mQuestions; // Every mStage has three triples, making 9 questions
     private int mCurrentQuestionNumber;
@@ -71,7 +72,7 @@ public class StageRunFragment extends Fragment {
                 }
             }
 
-            startQuestionEndAnimation();
+            endQuestion();
         }
     };
 
@@ -92,13 +93,20 @@ public class StageRunFragment extends Fragment {
         int skill = profile.getSkill();
         mQuestions = QuestionManager.get(getActivity()).getNextTripleSet(skill);
         mCurrentQuestionNumber = 0;
-
-
+        isPrePost = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_stage_run, container, false);
+        Context context = getActivity();
+        mPlayConstraintSet.clone(context, R.layout.fragment_stage_run);
+
+        View v = inflater.inflate(R.layout.fragment_stage_run_prepost, container, false);
+        mConstraintLayout = (ConstraintLayout) v;
+        mPrepostConstraintSet.clone(mConstraintLayout);
+
+//        ImageView correctBox = v.findViewById(R.id.correct_box_imageview);
+
 
         mAppNameTextView = v.findViewById(R.id.stage_status_textview);
         mAppNameTextView.setText(R.string.app_name);
@@ -118,7 +126,6 @@ public class StageRunFragment extends Fragment {
             allButtons[2] = mAnswerButton3;
             allButtons[3] = mAnswerButton4;
 
-            mStageBottomConstraintlayout = v.findViewById(R.id.stage_bottom_constraintlayout);
             startQuestion();
         }
 
@@ -126,14 +133,41 @@ public class StageRunFragment extends Fragment {
     }
 
     private void startQuestion() {
-        startQuestionStartAnimation();
-        updateUI();
+        new CountDownTimer(1000, 1000) {
+
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                TransitionManager.beginDelayedTransition(mConstraintLayout);
+                mPlayConstraintSet.applyTo(mConstraintLayout);
+
+                updateModel();
+            }
+        }.start();
+
     }
 
     private void endQuestion() {
-        clearLastQuestion();
-        getNextQuestion();
-        startQuestion();
+
+        new CountDownTimer(1500, 1500) {
+            @Override
+            public void onTick(long l) {
+
+            }
+            @Override
+            public void onFinish() {
+                clearLastQuestion();
+                getNextQuestion();
+                startQuestion();
+                TransitionManager.beginDelayedTransition(mConstraintLayout);
+                mPrepostConstraintSet.applyTo(mConstraintLayout);
+            }
+        }.start();
+
     }
 
     private void clearLastQuestion() {
@@ -142,7 +176,7 @@ public class StageRunFragment extends Fragment {
         }
     }
 
-    private void updateUI() {
+    private void updateModel() {
         mQuestionTextView.setText(mCurrentQuestion.getQuestion());
 
         ArrayList<String> answerBasket = new ArrayList<>();
@@ -181,45 +215,5 @@ public class StageRunFragment extends Fragment {
                 .commit();
     }
 
-    private void startQuestionStartAnimation() {
-//        float allButtonYStart = mStageBottomConstraintlayout.getHeight();
-//        float origButton1Top = mAnswerButton1.getTop();
-//        ObjectAnimator initialSetToBottomAnimator = ObjectAnimator
-//                .ofFloat(mAnswerButton1, "y", origButton1Top, allButtonYStart)
-//                .setDuration(1000);
-//
-        float answerButton1YStart = mStageBottomConstraintlayout.getHeight();
-        float answerButton1YEnd = mAnswerButton1.getTop();
-//
-        ObjectAnimator heightAnimator = ObjectAnimator
-                .ofFloat(mAnswerButton1, "y", answerButton1YStart, answerButton1YEnd)
-                .setDuration(2000);
-        heightAnimator.setInterpolator(new AccelerateInterpolator());
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(heightAnimator);
-        animatorSet.start();
-    }
-
-
-    private void startQuestionEndAnimation() {
-        float answerButton1YStart = mAnswerButton1.getTop();
-        float answerButton1YEnd = mStageBottomConstraintlayout.getHeight();
-
-        ObjectAnimator heightAnimator = ObjectAnimator
-                .ofFloat(mAnswerButton1, "y", answerButton1YStart, answerButton1YEnd)
-                .setDuration(2000);
-        heightAnimator.setInterpolator(new AccelerateInterpolator());
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                endQuestion();
-            }
-        });
-        animatorSet.play(heightAnimator);
-        animatorSet.start();
-    }
 }

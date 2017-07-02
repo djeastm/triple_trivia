@@ -1,0 +1,41 @@
+private void startQuestionStartAnimation() {
+//        float allButtonYStart = mStageBottomConstraintlayout.getHeight();
+//        float origButton1Top = mAnswerButton1.getTop();
+//        ObjectAnimator initialSetToBottomAnimator = ObjectAnimator
+//                .ofFloat(mAnswerButton1, "y", origButton1Top, allButtonYStart)
+//                .setDuration(1000);
+//
+        float answerButton1YStart = 0;
+        float answerButton1YEnd = mAnswerButton1.getTop();
+//
+        ObjectAnimator heightAnimator = ObjectAnimator
+                .ofFloat(mAnswerButton1, "y", answerButton1YStart, answerButton1YEnd)
+                .setDuration(2000);
+        heightAnimator.setInterpolator(new AccelerateInterpolator());
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(heightAnimator);
+        animatorSet.start();
+    }
+
+
+    private void startQuestionEndAnimation() {
+        float answerButton1YStart = mAnswerButton1.getTop();
+        float answerButton1YEnd = 0;
+
+        ObjectAnimator heightAnimator = ObjectAnimator
+                .ofFloat(mAnswerButton1, "y", answerButton1YStart, answerButton1YEnd)
+                .setDuration(2000);
+        heightAnimator.setInterpolator(new AccelerateInterpolator());
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                endQuestion();
+            }
+        });
+        animatorSet.play(heightAnimator);
+        animatorSet.start();
+    }
