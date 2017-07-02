@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.transition.AutoTransition;
-import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -133,6 +131,7 @@ public class StageRunFragment extends Fragment {
     }
 
     private void startQuestion() {
+
         new CountDownTimer(1000, 1000) {
 
             @Override
@@ -145,6 +144,7 @@ public class StageRunFragment extends Fragment {
                 TransitionManager.beginDelayedTransition(mConstraintLayout);
                 mPlayConstraintSet.applyTo(mConstraintLayout);
 
+                updateUI();
                 updateModel();
             }
         }.start();
@@ -160,7 +160,7 @@ public class StageRunFragment extends Fragment {
             }
             @Override
             public void onFinish() {
-                clearLastQuestion();
+
                 getNextQuestion();
                 startQuestion();
                 TransitionManager.beginDelayedTransition(mConstraintLayout);
@@ -170,13 +170,11 @@ public class StageRunFragment extends Fragment {
 
     }
 
-    private void clearLastQuestion() {
+    private void updateUI() {
         for (Button b : allButtons) {
             b.setBackground(getResources().getDrawable(R.drawable.button_answer));
         }
-    }
 
-    private void updateModel() {
         mQuestionTextView.setText(mCurrentQuestion.getQuestion());
 
         ArrayList<String> answerBasket = new ArrayList<>();
@@ -194,7 +192,9 @@ public class StageRunFragment extends Fragment {
         mAnswerButton3.setOnClickListener(answerButtonClick);
         mAnswerButton4.setText(answerBasket.get(3));
         mAnswerButton4.setOnClickListener(answerButtonClick);
+    }
 
+    private void updateModel() {
         mCurrentQuestion.setQuestionSeen(true);
         QuestionManager.get(getActivity()).updateQuestion(mCurrentQuestion);
     }
