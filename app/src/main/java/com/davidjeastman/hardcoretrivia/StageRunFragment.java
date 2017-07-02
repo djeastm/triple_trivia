@@ -97,7 +97,7 @@ public class StageRunFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Context context = getActivity();
-        mPlayConstraintSet.clone(context, R.layout.fragment_stage_run);
+        mPlayConstraintSet.clone(context, R.layout.fragment_stage_run_play_constraints);
 
         View v = inflater.inflate(R.layout.fragment_stage_run_prepost, container, false);
         mConstraintLayout = (ConstraintLayout) v;
@@ -106,7 +106,7 @@ public class StageRunFragment extends Fragment {
 //        ImageView correctBox = v.findViewById(R.id.correct_box_imageview);
 
 
-        mAppNameTextView = v.findViewById(R.id.stage_status_textview);
+        mAppNameTextView = v.findViewById(R.id.app_name_textview);
         mAppNameTextView.setText(R.string.app_name);
         if (mQuestions.size() == 0)
             Toast.makeText(getContext(), "Not enough questions!", Toast.LENGTH_LONG).show();

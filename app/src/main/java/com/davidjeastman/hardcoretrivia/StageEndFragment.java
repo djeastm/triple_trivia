@@ -10,14 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.entries;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -83,7 +80,7 @@ public class StageEndFragment extends Fragment {
 
         DrawerLayout mDrawerLayout = v.findViewById(R.id.drawer_layout);
 
-        TextView mStageAppNameTextView = v.findViewById(R.id.stage_app_name_textview);
+        TextView mStageAppNameTextView = v.findViewById(R.id.app_name_textview);
         TextView mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
         TextView mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
         TextView mStageEndCorrectAnswersTextView = v.findViewById(R.id.stage_end_correct_answers_textview);
