@@ -73,6 +73,7 @@ public class StageRunFragment extends Fragment {
             endQuestion();
         }
     };
+    private boolean isRoundOver;
 
     public static StageRunFragment newInstance() {
         Bundle args = new Bundle();
@@ -131,24 +132,24 @@ public class StageRunFragment extends Fragment {
     }
 
     private void startQuestion() {
+        if (!isRoundOver) {
+            new CountDownTimer(1000, 1000) {
 
-        new CountDownTimer(1000, 1000) {
+                @Override
+                public void onTick(long l) {
 
-            @Override
-            public void onTick(long l) {
+                }
 
-            }
+                @Override
+                public void onFinish() {
+                    TransitionManager.beginDelayedTransition(mConstraintLayout);
+                    mPlayConstraintSet.applyTo(mConstraintLayout);
 
-            @Override
-            public void onFinish() {
-                TransitionManager.beginDelayedTransition(mConstraintLayout);
-                mPlayConstraintSet.applyTo(mConstraintLayout);
-
-                updateUI();
-                updateModel();
-            }
-        }.start();
-
+                    updateUI();
+                    updateModel();
+                }
+            }.start();
+        }
     }
 
     private void endQuestion() {
@@ -204,6 +205,7 @@ public class StageRunFragment extends Fragment {
             mCurrentQuestion = mQuestions.get(++mCurrentQuestionNumber);
         else {
             Log.e(TAG, "No more questions. End stage.");
+            isRoundOver = true;
             loadEndStage();
         }
     }
