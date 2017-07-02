@@ -1,4 +1,4 @@
-package com.davidjeastman.hardcoretrivia;
+package com.davidjeastman.tufftrivia;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.davidjeastman.hardcoretrivia.database.TriviaDbHelper;
-import com.davidjeastman.hardcoretrivia.database.TriviaCursorWrapper;
-import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.ProfileTable;
+import com.davidjeastman.tufftrivia.database.TriviaDbHelper;
+import com.davidjeastman.tufftrivia.database.TriviaCursorWrapper;
+import com.davidjeastman.tufftrivia.database.TriviaDbSchema.ProfileTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +25,7 @@ import static android.R.attr.id;
  */
 
 public class ProfileManager {
-    public static final String APP_NAME = "HardcoreTrivia";
+    public static final String APP_NAME = "TuffTrivia";
     public static final String TAG = "ProfileManager";
     public static final String APP_DIRECTORY = APP_NAME;
 

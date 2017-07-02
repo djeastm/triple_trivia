@@ -1,4 +1,4 @@
-package com.davidjeastman.hardcoretrivia;
+package com.davidjeastman.tufftrivia;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,15 +11,15 @@ import android.widget.TextView;
  * Created by David Eastman on 6/22/2017.
  */
 
-public class AboutFragment extends Fragment {
-    private static final String ARG_ABOUT_ID = "about_id";
+public class SettingsFragment extends Fragment {
+    private static final String ARG_SETTINGS_ID = "settings_id";
 
-    private TextView mAboutField;
+    private TextView mSettingsField;
 
-    public static AboutFragment newInstance() {
+    public static SettingsFragment newInstance() {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_ABOUT_ID, 1);
-        AboutFragment fragment = new AboutFragment();
+        args.putSerializable(ARG_SETTINGS_ID, 1);
+        SettingsFragment fragment = new SettingsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,10 +32,10 @@ public class AboutFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_about, container, false);
+        View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        mAboutField = (TextView) v.findViewById(R.id.about_label_text_view);
-        mAboutField.setText("About");
+        mSettingsField = (TextView) v.findViewById(R.id.settings_label_text_view);
+        mSettingsField.setText("Settings");
         return v;
     }
 }

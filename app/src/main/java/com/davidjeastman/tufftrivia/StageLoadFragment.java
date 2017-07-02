@@ -1,4 +1,4 @@
-package com.davidjeastman.hardcoretrivia;
+package com.davidjeastman.tufftrivia;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;

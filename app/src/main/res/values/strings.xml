@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HardcoreTrivia</string>
+    <string name="app_name">TuffTrivia</string>
 
     <string name="profile_setup_name_hint">Name</string>
     <string name="profile_setup_location_hint">Location</string>

@@ -1,4 +1,4 @@
-package com.davidjeastman.hardcoretrivia;
+package com.davidjeastman.tufftrivia;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -104,8 +104,20 @@ public class StageRunFragment extends Fragment {
         mConstraintLayout = (ConstraintLayout) v;
         mPrepostConstraintSet.clone(mConstraintLayout);
 
-//        ImageView correctBox = v.findViewById(R.id.correct_box_imageview);
-
+        ImageView correctBox = v.findViewById(R.id.correct_box_imageview);
+        // Debug cheat to end stage fast
+        correctBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (Question q : mQuestions) {
+                    q.setQuestionSeen(false);
+                    q.setPlayerAnswer(q.getCorrectAnswer());
+                    q.setPlayerCorrect(true);
+                    QuestionManager.get(getActivity()).updateQuestion(q);
+                }
+                loadEndStage();
+            }
+        });
 
         mAppNameTextView = v.findViewById(R.id.app_name_textview);
         mAppNameTextView.setText(R.string.app_name);

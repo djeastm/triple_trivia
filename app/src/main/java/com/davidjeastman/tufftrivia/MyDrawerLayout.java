@@ -1,4 +1,4 @@
-package com.davidjeastman.hardcoretrivia;
+package com.davidjeastman.tufftrivia;
 
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;

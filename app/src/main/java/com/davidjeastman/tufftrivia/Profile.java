@@ -1,8 +1,8 @@
-package com.davidjeastman.hardcoretrivia;
+package com.davidjeastman.tufftrivia;
 
 import java.util.UUID;
 
-import static com.davidjeastman.hardcoretrivia.R.string.stage;
+import static com.davidjeastman.tufftrivia.R.string.stage;
 
 /**
  * Created by David Eastman on 6/22/2017.

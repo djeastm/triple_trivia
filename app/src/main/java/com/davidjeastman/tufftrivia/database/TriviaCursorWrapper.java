@@ -1,12 +1,12 @@
-package com.davidjeastman.hardcoretrivia.database;
+package com.davidjeastman.tufftrivia.database;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.davidjeastman.hardcoretrivia.Profile;
-import com.davidjeastman.hardcoretrivia.Question;
-import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.QuestionTable;
-import com.davidjeastman.hardcoretrivia.database.TriviaDbSchema.ProfileTable;
+import com.davidjeastman.tufftrivia.Profile;
+import com.davidjeastman.tufftrivia.Question;
+import com.davidjeastman.tufftrivia.database.TriviaDbSchema.QuestionTable;
+import com.davidjeastman.tufftrivia.database.TriviaDbSchema.ProfileTable;
 
 import java.util.UUID;
 
