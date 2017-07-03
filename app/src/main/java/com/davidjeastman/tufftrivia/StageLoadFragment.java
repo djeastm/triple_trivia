@@ -19,7 +19,7 @@ public class StageLoadFragment extends Fragment {
     private static final String TAG = "StageLoadFragment";
     private static final int mSeconds = 3;
 
-    private TextView mStageLabelTextView;
+    private TextView mStageNumberTextView;
 
     public static StageLoadFragment newInstance() {
         Bundle args = new Bundle();
@@ -39,14 +39,13 @@ public class StageLoadFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_stage_load, container, false);
 
         int mStage = ProfileManager.get(getActivity()).getProfile().getStage();
-        mStageLabelTextView = v.findViewById(R.id.stage_load_stage_label_text_view);
-        mStageLabelTextView.setText(getResources().getString(R.string.stage) + " " + String.valueOf(mStage));
+        mStageNumberTextView = v.findViewById(R.id.stage_load_stage_number_text_view);
+        mStageNumberTextView.setText(String.valueOf(mStage));
 
         final TextView countdownTimerButton = v.findViewById(R.id.stage_load_countdown_text_view);
         countdownTimerButton.setText(String.valueOf(mSeconds));
 
         final CircleProgressBar countdownTimerProgressBar = v.findViewById(R.id.countdown_circle_progressbar);
-        //countdownTimerProgressBar.setProgress(0);
 
         new CountDownTimer((mSeconds + 1) * 1000, 10) {
             @Override

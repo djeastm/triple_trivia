@@ -22,7 +22,7 @@
             layout="@layout/textview_appnamebar"
             android:id="@+id/app_name_textview"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
@@ -31,7 +31,7 @@
             android:id="@+id/stage_end_message_textview"
             android:text="@string/stage"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textAlignment="center"
@@ -47,7 +47,7 @@
             android:id="@+id/stage_end_subtitle_textview"
             android:text=""
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textAlignment="center"
@@ -62,7 +62,7 @@
             android:id="@+id/stage_end_correct_answers_textview"
             android:text="@string/correct_answers"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="24dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textAlignment="center"
@@ -78,7 +78,7 @@
             android:id="@+id/stage_end_next_level_score_textview"
             android:text="@string/next_level_score"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textAlignment="center"
@@ -94,7 +94,7 @@
             android:id="@+id/stage_end_points_fraction_textview"
             android:text=""
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textAlignment="center"
@@ -238,7 +238,4 @@
             >
         </android.support.v7.widget.RecyclerView>
     </android.support.constraint.ConstraintLayout>
-
-
-
 </com.davidjeastman.tufftrivia.MyDrawerLayout>
