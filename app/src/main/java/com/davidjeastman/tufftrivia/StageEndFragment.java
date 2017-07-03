@@ -5,11 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +70,7 @@ public class StageEndFragment extends Fragment {
         }
 
         mProfilePoints = profile.getPoints();
+        mProfileNextLevelPoints = TEST_NEXT_LEVEL_PTS;
         mStage = profile.getStage();
 
         //for (Question q : mQuestions) Log.i(TAG,q.getQuestion());
@@ -83,7 +84,8 @@ public class StageEndFragment extends Fragment {
         TextView mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
         TextView mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
         TextView mStageEndCorrectAnswersTextView = v.findViewById(R.id.stage_end_correct_answers_textview);
-        TextView mStageEndPointsFractionTextView = v.findViewById(R.id.stage_end_points_fraction_textview);
+        ProgressBar mStageEndPointsFractionProgressBar = v.findViewById(R.id.stage_end_points_fraction_progress_bar);
+        TextView mStageEndPointsFractionTextView = v.findViewById(R.id.stage_end_points_fraction_text_view);
         TextView mStageEndPointsAbbrevTextView = v.findViewById(R.id.stage_end_points_points_abbrev_textview);
         TextView mStageEndTimeBonusPtsAbbrevTextView = v.findViewById(R.id.stage_end_time_bonus_points_abbrev_textview);
         Button mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
@@ -125,6 +127,8 @@ public class StageEndFragment extends Fragment {
 
         mStageEndCorrectAnswersTextView
                 .setText(getString(R.string.correct_answers, mNumCorrect, mQuestions.size()));
+        mStageEndPointsFractionProgressBar
+                .setProgress((int)(((double) mProfilePoints/mProfileNextLevelPoints)*100));
         mStageEndPointsFractionTextView
                 .setText(getString(R.string.points_fraction, mProfilePoints, mProfileNextLevelPoints));
         mStageEndPointsAbbrevTextView
@@ -196,7 +200,6 @@ public class StageEndFragment extends Fragment {
         }
 
         public void bindEntry(Question question) {
-            Log.i(TAG, "bindEntry: " + question.getQuestion());
             mQuestion = question;
             mQuestionTextView.setText(mQuestion.getQuestion());
             mCorrectAnswerTextView.setText(mQuestion.getCorrectAnswer());

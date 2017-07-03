@@ -14,23 +14,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
-        <style name="ProfilePlayButton" parent="Widget.AppCompat.Button">
+    <style name="ProfilePlayButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_play</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
-    </style>
-    <style name="Passed" parent="AppTheme">
-        <item name="colorPrimary">@color/mediumGreen</item>
-        <item name="colorPrimaryDark">@color/darkGreen</item>
-        <item name="colorAccent">@color/lightGreen</item>
-        <item name="android:statusBarColor">@color/mediumGreen</item>
-    </style>
-    <style name="Failed" parent="AppTheme">
-        <item name="colorPrimary">@color/mediumRed</item>
-        <item name="colorPrimaryDark">@color/darkRed</item>
-        <item name="colorAccent">@color/lightRed</item>
-        <item name="android:statusBarColor">@color/mediumRed</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>

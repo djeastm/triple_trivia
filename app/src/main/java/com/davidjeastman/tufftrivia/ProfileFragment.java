@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
@@ -17,11 +18,14 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
     private static final String ARG_PROFILE_ID = "profile_id";
+    private static final int TEST_NEXT_LEVEL_PTS = 4000;
+    //stage_end_points_fraction_progress_bar
 
     private Profile mProfile;
     private TextView mNameField;
     private TextView mLocationField;
     private TextView mLevelField;
+    private ProgressBar mNextLevelProgressBar;
     private TextView mPointsField;
     private TextView mRankField;
 
@@ -51,7 +55,9 @@ public class ProfileFragment extends Fragment {
 
         mLevelField = v.findViewById(R.id.profile_level_text_view);
 
-        mPointsField = v.findViewById(R.id.profile_points_text_view);
+        mNextLevelProgressBar = v.findViewById(R.id.profile_points_fraction_progress_bar);
+
+        mPointsField = v.findViewById(R.id.profile_points_fraction_text_view);
 
         mRankField = v.findViewById(R.id.profile_rank_text_view);
 
@@ -82,8 +88,10 @@ public class ProfileFragment extends Fragment {
         getResources().getString(R.string.profile_level_text, mProfile.getLevel());
         mLevelField.setText(getResources()
                 .getString(R.string.profile_level_text, mProfile.getLevel()));
-        mPointsField.setText(String.valueOf(mProfile.getPoints())
-                + " " + getResources().getString(R.string.profile_points_label));
+        mNextLevelProgressBar
+                .setProgress((int)(((double) mProfile.getPoints()/TEST_NEXT_LEVEL_PTS)*100));
+        mPointsField
+                .setText(getString(R.string.points_fraction, mProfile.getPoints(), TEST_NEXT_LEVEL_PTS));
         mRankField.setText(String.valueOf(mProfile.getRank()));
     }
 }
