@@ -106,27 +106,21 @@ public class StageEndFragment extends Fragment {
         if (!mIsUpdated) updateProfile(isStagePassed);
 
         if (isStagePassed) {
-            v.getRootView()
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
-            mStageAppNameTextView
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageEndMessageTextView
                     .setText(getString(R.string.stage) + " " + String.valueOf(mStage)
                             + " " + getString(R.string.completed));
+            mStageEndMessageTextView
+                    .setTextColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageEndContinueTryAgainButton
                     .setText(R.string.continue_button);
 
         } else {
-            v.getRootView()
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumRed));
-            mStageAppNameTextView
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mediumRed));
             mStageEndMessageTextView
                     .setText(R.string.game_over);
+            mStageEndMessageTextView
+                    .setTextColor(ContextCompat.getColor(getContext(), R.color.mediumRed));
             mStageEndSubtitleTextView
                     .setText(R.string.better_luck);
-            mStageEndPointsFractionTextView
-                    .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.darkRed));
             mStageEndContinueTryAgainButton
                     .setText(R.string.try_again_button);
         }
