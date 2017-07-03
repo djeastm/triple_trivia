@@ -11,6 +11,7 @@
     <string name="profile_location_label">Location</string>
     <string name="profile_level_label">Level</string>
     <string name="profile_points_label">Points</string>
+    <string name="profile_level_text">Level %d</string>
     <string name="profile_rank_label">Rank</string>
     <string name="leaderboard_label">Leader</string>
     <string name="settings_label">Settings</string>

@@ -79,7 +79,9 @@ public class ProfileFragment extends Fragment {
         mProfile = ProfileManager.get(getActivity()).getProfile();
         mNameField.setText(mProfile.getName());
         mLocationField.setText(mProfile.getLocation());
-        mLevelField.setText(String.valueOf(mProfile.getLevel()));
+        getResources().getString(R.string.profile_level_text, mProfile.getLevel());
+        mLevelField.setText(getResources()
+                .getString(R.string.profile_level_text, mProfile.getLevel()));
         mPointsField.setText(String.valueOf(mProfile.getPoints())
                 + " " + getResources().getString(R.string.profile_points_label));
         mRankField.setText(String.valueOf(mProfile.getRank()));
