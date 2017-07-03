@@ -80,9 +80,6 @@ public class StageEndFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stage_end, container, false);
 
-        DrawerLayout mDrawerLayout = v.findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
         TextView mStageAppNameTextView = v.findViewById(R.id.app_name_textview);
         TextView mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
         TextView mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
