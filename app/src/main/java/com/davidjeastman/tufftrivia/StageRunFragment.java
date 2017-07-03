@@ -44,29 +44,33 @@ public class StageRunFragment extends Fragment {
     private int mCurrentQuestionNumber;
     private Question mCurrentQuestion;
     private boolean isRoundOver;
+    private boolean isQuestionOver;
+
     private View.OnClickListener answerButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Button thisButton = (Button) v;
+            if (!isQuestionOver) {
+                Button thisButton = (Button) v;
 
-            mQuestions.get(mCurrentQuestionNumber)
-                    .setPlayerAnswer(thisButton.getText().toString());
+                mQuestions.get(mCurrentQuestionNumber)
+                        .setPlayerAnswer(thisButton.getText().toString());
 
-            if (thisButton.getText().equals(mCurrentQuestion.getCorrectAnswer())) {
-                mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(true);
-                thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
+                if (thisButton.getText().equals(mCurrentQuestion.getCorrectAnswer())) {
+                    mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(true);
+                    thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
 
-            } else {
-                mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(false);
-                thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_incorrect));
+                } else {
+                    mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(false);
+                    thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_incorrect));
 
-                for (Button b : allButtons) {
-                    if (b.getText().equals(mCurrentQuestion.getCorrectAnswer()))
-                        b.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
+                    for (Button b : allButtons) {
+                        if (b.getText().equals(mCurrentQuestion.getCorrectAnswer()))
+                            b.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
+                    }
                 }
+                isQuestionOver = true;
+                endQuestion();
             }
-
-            endQuestion();
         }
     };
 
@@ -153,6 +157,7 @@ public class StageRunFragment extends Fragment {
                     TransitionManager.beginDelayedTransition(mConstraintLayout);
                     mPlayConstraintSet.applyTo(mConstraintLayout);
 
+                    isQuestionOver = false;
                     updateUI();
                     updateModel();
                 }
