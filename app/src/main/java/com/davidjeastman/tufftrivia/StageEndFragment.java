@@ -3,8 +3,6 @@ package com.davidjeastman.tufftrivia;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +25,7 @@ public class StageEndFragment extends Fragment {
     private static final String TAG = "StageEndFragment";
     private static final String ARG_QUESTION_LIST_ID = "question_list_id";
     private static final String KEY_UPDATED = "updated";
+    private static final int TEST_NEXT_LEVEL_PTS = 4000;
 
     private List<Question> mQuestions;
 
@@ -35,6 +34,7 @@ public class StageEndFragment extends Fragment {
 
     private int mStage;
     private int mProfilePoints;
+    private int mProfileNextLevelPoints;
     private int mNumCorrect;
     private int mStagePoints;
     private int mTimeBonusPoints;
@@ -106,8 +106,7 @@ public class StageEndFragment extends Fragment {
 
         if (isStagePassed) {
             mStageEndMessageTextView
-                    .setText(getString(R.string.stage) + " " + String.valueOf(mStage)
-                            + " " + getString(R.string.completed));
+                    .setText(getString(R.string.stage_completed, mStage));
             mStageEndMessageTextView
                     .setTextColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageEndContinueTryAgainButton
@@ -125,10 +124,9 @@ public class StageEndFragment extends Fragment {
         }
 
         mStageEndCorrectAnswersTextView
-                .setText(String.valueOf(mNumCorrect) + " / "
-                        + String.valueOf(mQuestions.size()) + " " + getString(R.string.correct_answers));
+                .setText(getString(R.string.correct_answers, mNumCorrect, mQuestions.size()));
         mStageEndPointsFractionTextView
-                .setText(String.valueOf(mProfilePoints) + " / " + 4000);
+                .setText(getString(R.string.points_fraction, mProfilePoints, mProfileNextLevelPoints));
         mStageEndPointsAbbrevTextView
                 .setText(String.valueOf(mStagePoints));
         mStageEndTimeBonusPtsAbbrevTextView
@@ -198,7 +196,7 @@ public class StageEndFragment extends Fragment {
         }
 
         public void bindEntry(Question question) {
-            Log.i(TAG, "bindEntry: "+question.getQuestion());
+            Log.i(TAG, "bindEntry: " + question.getQuestion());
             mQuestion = question;
             mQuestionTextView.setText(mQuestion.getQuestion());
             mCorrectAnswerTextView.setText(mQuestion.getCorrectAnswer());
@@ -209,6 +207,7 @@ public class StageEndFragment extends Fragment {
             Toast.makeText(getContext(), "Clicked!", Toast.LENGTH_SHORT);
         }
     }
+
     private class QuestionAdapter extends RecyclerView.Adapter<QuestionHolder> {
 
 

@@ -32,9 +32,10 @@
 
     <string name="game_over">GAME OVER</string>
     <string name="stage">STAGE</string>
-    <string name="completed">COMPLETED</string>
+    <string name="stage_completed">STAGE %d COMPLETED</string>
     <string name="better_luck">Better luck next time!</string>
-    <string name="correct_answers">Correct Answers</string>
+    <string name="correct_answers">%1$d / %2$d Correct Answers</string>
+    <string name="points_fraction">%1$d / %2$d</string>
     <string name="next_level_score">NEXT LEVEL SCORE</string>
     <string name="time_bonus">Time Bonus</string>
     <string name="points">Points</string>
