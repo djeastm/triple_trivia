@@ -19,7 +19,7 @@
     <TextView
         android:id="@+id/stage_end_message_textview"
         android:text="@string/stage"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textAlignment="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
     <TextView
         android:id="@+id/stage_end_subtitle_textview"
         android:text=""
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textAlignment="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@+id/stage_end_subtitle_textview"
         app:layout_constraintRight_toRightOf="parent"

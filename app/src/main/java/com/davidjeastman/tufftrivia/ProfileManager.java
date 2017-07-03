@@ -79,12 +79,6 @@ public class ProfileManager {
         ContentValues values = getContentValues(e);
         mDatabase.insert(ProfileTable.NAME, null, values);
     }
-//
-//    public void deleteProfile(Profile c) {
-//        String uuidString = c.getUUID().toString();
-//        mDatabase.delete(ProfileTable.NAME, ProfileTable.Cols.UUID + " = ?",
-//                new String[]{uuidString});
-//    }
 
     public void updateProfile(Profile Profile) {
         String uuidString = Profile.getId().toString();
@@ -93,41 +87,6 @@ public class ProfileManager {
                 ProfileTable.Cols.UUID + " = ?",
                 new String[]{uuidString});
     }
-
-//    public List<Profile> getProfiles() {
-//        return getProfiles(null);
-//    }
-//
-//    public List<Profile> getProfiles(String searchTerm) {
-//        String queryWhereClause;
-//
-//        List<Profile> entries = new ArrayList<>();
-//
-//        if (searchTerm != null) {
-//            queryWhereClause = "BATCH LIKE '%" + searchTerm +
-//                    "%' OR POSITION LIKE '%" + searchTerm + "%'";
-//        } else {
-//            queryWhereClause = null;
-//        }
-//
-//        TriviaCursorWrapper cursor = queryProfiles(queryWhereClause, null);
-//        try {
-//            cursor.moveToFirst();
-//            while (!cursor.isAfterLast()) {
-//                entries.add(cursor.getProfile());
-//                cursor.moveToNext();
-//            }
-//        } finally {
-//            cursor.close();
-//        }
-////        Collections.sort(entries, new Comparator<Profile>() {
-////            @Override
-////            public int compare(Profile e1, Profile e2) {
-////                return e1.getTriple().compareTo(e2.getTriple());
-////            }
-////        });
-//        return entries;
-//    }
 
     public Profile getProfile() {
 
