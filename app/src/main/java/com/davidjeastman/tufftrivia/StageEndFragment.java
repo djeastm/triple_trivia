@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,6 +208,7 @@ public class StageEndFragment extends Fragment {
         }
 
         public void bindEntry(Question question) {
+            Log.i(TAG, "bindEntry: "+question.getQuestion());
             mQuestion = question;
             mQuestionTextView.setText(mQuestion.getQuestion());
             mCorrectAnswerTextView.setText(mQuestion.getCorrectAnswer());
