@@ -3,7 +3,6 @@
         <item name="android:colorPrimary">@color/mediumBlue</item>
         <item name="android:colorPrimaryDark">@color/darkBlue</item>
         <item name="android:colorAccent">@color/lightBlue</item>
-        <item name="android:statusBarColor">@color/black</item>
     </style>
     <style name="AppNameBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textStyle">bold</item>

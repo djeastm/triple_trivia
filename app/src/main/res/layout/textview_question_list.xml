@@ -5,7 +5,7 @@
     android:id="@+id/question_list_label_textview"
     android:text="@string/question_list"
     android:gravity="center"
-    android:elevation="4dp"
+    android:elevation="2dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Large"
     android:textAlignment="center"
     />

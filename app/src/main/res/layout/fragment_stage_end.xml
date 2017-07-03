@@ -193,7 +193,6 @@
         android:layout_marginStart="48dp"
         />
 
-
     <include
         layout="@layout/textview_question_list"
         android:id="@+id/question_list_label_textview"
