@@ -38,7 +38,6 @@ public class StageRunFragment extends Fragment {
     private ConstraintSet mPrepostConstraintSet = new ConstraintSet();
     private ConstraintSet mPlayConstraintSet = new ConstraintSet();
     private ConstraintLayout mConstraintLayout;
-    private boolean isPrePost;
 
     private List<Question> mQuestions; // Every mStage has three triples, making 9 questions
     private int mCurrentQuestionNumber;
@@ -91,7 +90,6 @@ public class StageRunFragment extends Fragment {
         int skill = profile.getSkill();
         mQuestions = QuestionManager.get(getActivity()).getNextTripleSet(skill);
         mCurrentQuestionNumber = 0;
-        isPrePost = false;
     }
 
     @Override
@@ -225,7 +223,7 @@ public class StageRunFragment extends Fragment {
     }
 
     private void loadEndStage() {
-        StageEndFragment nextFrag = StageEndFragment.newInstance((ArrayList) mQuestions);
+        StageEndFragment nextFrag = StageEndFragment.newInstance((ArrayList<Question>) mQuestions);
         getFragmentManager().beginTransaction()
                 .replace(R.id.stage_container, nextFrag, TAG)
                 .commit();
