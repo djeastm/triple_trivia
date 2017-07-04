@@ -3,15 +3,11 @@ package com.davidjeastman.tufftrivia;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import static com.davidjeastman.tufftrivia.Profile.NEXT_LEVEL_THRESHOLDS;
 
 /**
  * Created by David Eastman on 6/22/2017.

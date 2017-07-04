@@ -5,17 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by David Eastman on 6/25/2017.
@@ -64,7 +59,7 @@ public class ProfileSetupFragment extends Fragment {
             }
 
         });
-        EditText mLocationEditText =  v.findViewById(R.id.profile_setup_location_edittext);
+        EditText mLocationEditText = v.findViewById(R.id.profile_setup_location_edittext);
         mLocationEditText.addTextChangedListener(new TextWatcher() {
 
             @Override

@@ -4,21 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import com.davidjeastman.tufftrivia.database.TriviaDbHelper;
 import com.davidjeastman.tufftrivia.database.TriviaCursorWrapper;
+import com.davidjeastman.tufftrivia.database.TriviaDbHelper;
 import com.davidjeastman.tufftrivia.database.TriviaDbSchema.ProfileTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static android.R.attr.id;
 
 /**
  * Created by David Eastman on 6/25/2017.

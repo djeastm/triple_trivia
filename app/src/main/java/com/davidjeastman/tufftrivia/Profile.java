@@ -1,11 +1,6 @@
 package com.davidjeastman.tufftrivia;
 
-import android.util.SparseIntArray;
-
-import java.util.HashMap;
 import java.util.UUID;
-
-import static com.davidjeastman.tufftrivia.R.string.stage;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -13,14 +8,11 @@ import static com.davidjeastman.tufftrivia.R.string.stage;
 
 public class Profile {
 
-    private static final int SKILL_START = 1;
-    private static final int SKILL_MAX = 3;
-
     public static final double SKILL_ADJUST = 0.25;
-
     public static final int[] NEXT_LEVEL_THRESHOLDS =
             {-1, 4000, 9000, 12000, 16000, 21000, 25000, 31000};
-
+    private static final int SKILL_START = 1;
+    private static final int SKILL_MAX = 3;
     private UUID mId;
     private String mName;
     private String mLocation;
@@ -31,8 +23,9 @@ public class Profile {
     private int mRank;
 
 
-
-    public Profile() { this(UUID.randomUUID()); }
+    public Profile() {
+        this(UUID.randomUUID());
+    }
 
     public Profile(UUID id) {
         mId = id;
@@ -77,7 +70,9 @@ public class Profile {
         mStage = stage;
     }
 
-    public void increaseStage() {mStage++;}
+    public void increaseStage() {
+        mStage++;
+    }
 
     public int getLevel() {
         return mLevel;
@@ -95,9 +90,13 @@ public class Profile {
         mSkill = skill;
     }
 
-    public void reduceSkill() {mSkill = mSkill > 1 ? mSkill-- : mSkill;}
+    public void reduceSkill() {
+        mSkill = mSkill > 1 ? mSkill-- : mSkill;
+    }
 
-    public void increaseSkill() {mSkill = mSkill < SKILL_MAX ? mSkill++ : mSkill;}
+    public void increaseSkill() {
+        mSkill = mSkill < SKILL_MAX ? mSkill++ : mSkill;
+    }
 
     public int getPoints() {
         return mPoints;
