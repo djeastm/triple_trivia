@@ -27,14 +27,12 @@ public class StageEndFragment extends Fragment {
     private static final String KEY_UPDATED = "updated";
     private static final int TEST_NEXT_LEVEL_PTS = 4000;
 
+    private Profile mProfile;
     private List<Question> mQuestions;
 
     private RecyclerView mQuestionRecyclerView;
     private QuestionAdapter mAdapter;
 
-    private int mStage;
-    private int mProfilePoints;
-    private int mProfileNextLevelPoints;
     private int mNumCorrect;
     private int mStagePoints;
     private int mTimeBonusPoints;
@@ -64,16 +62,10 @@ public class StageEndFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        Profile profile = ProfileManager.get(getActivity()).getProfile();
+        mProfile = ProfileManager.get(getActivity()).getProfile();
         if (savedInstanceState != null) {
             mIsUpdated = savedInstanceState.getBoolean(KEY_UPDATED);
         }
-
-        mProfilePoints = profile.getPoints();
-        mProfileNextLevelPoints = TEST_NEXT_LEVEL_PTS;
-        mStage = profile.getStage();
-
-        //for (Question q : mQuestions) Log.i(TAG,q.getQuestion());
 
     }
 
@@ -104,11 +96,14 @@ public class StageEndFragment extends Fragment {
         }
 
         boolean isStagePassed = calculateScore();
-        if (!mIsUpdated) updateProfile(isStagePassed);
+        if (!mIsUpdated) {
+            updateProfile(isStagePassed);
+            mProfile = ProfileManager.get(getActivity()).getProfile();
+        }
 
         if (isStagePassed) {
             mStageEndMessageTextView
-                    .setText(getString(R.string.stage_completed, mStage));
+                    .setText(getString(R.string.stage_completed, mProfile.getStage()));
             mStageEndMessageTextView
                     .setTextColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageEndContinueTryAgainButton
@@ -127,10 +122,14 @@ public class StageEndFragment extends Fragment {
 
         mStageEndCorrectAnswersTextView
                 .setText(getString(R.string.correct_answers, mNumCorrect, mQuestions.size()));
+        int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+
         mStageEndPointsFractionProgressBar
-                .setProgress((int)(((double) mProfilePoints/mProfileNextLevelPoints)*100));
+                .setProgress((int) (((double) mProfile.getPoints()
+                        / next_level_point_threshold) * 100));
         mStageEndPointsFractionTextView
-                .setText(getString(R.string.points_fraction, mProfilePoints, mProfileNextLevelPoints));
+                .setText(getString(R.string.points_fraction,
+                        mProfile.getPoints(), next_level_point_threshold));
         mStageEndPointsAbbrevTextView
                 .setText(String.valueOf(mStagePoints));
         mStageEndTimeBonusPtsAbbrevTextView
@@ -172,8 +171,10 @@ public class StageEndFragment extends Fragment {
             profile.increaseSkill();
             profile.increaseStage();
 
-            mProfilePoints += mStagePoints;
-            profile.setPoints(mProfilePoints);
+            profile.setPoints(mProfile.getPoints() + mStagePoints);
+
+            if (profile.getPoints() > Profile.NEXT_LEVEL_THRESHOLDS[profile.getLevel()])
+                profile.setLevel(profile.getLevel() + 1);
 
             pm.updateProfile(profile);
         } else {

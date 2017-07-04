@@ -3,12 +3,15 @@ package com.davidjeastman.tufftrivia;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import static com.davidjeastman.tufftrivia.Profile.NEXT_LEVEL_THRESHOLDS;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -88,10 +91,15 @@ public class ProfileFragment extends Fragment {
         getResources().getString(R.string.profile_level_text, mProfile.getLevel());
         mLevelField.setText(getResources()
                 .getString(R.string.profile_level_text, mProfile.getLevel()));
+
+        int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+
         mNextLevelProgressBar
-                .setProgress((int)(((double) mProfile.getPoints()/TEST_NEXT_LEVEL_PTS)*100));
+                .setProgress((int) (((double) mProfile.getPoints()
+                        / next_level_point_threshold) * 100));
         mPointsField
-                .setText(getString(R.string.points_fraction, mProfile.getPoints(), TEST_NEXT_LEVEL_PTS));
+                .setText(getString(R.string.points_fraction,
+                        mProfile.getPoints(), next_level_point_threshold));
         mRankField.setText(String.valueOf(mProfile.getRank()));
     }
 }

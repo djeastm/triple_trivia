@@ -1,5 +1,8 @@
 package com.davidjeastman.tufftrivia;
 
+import android.util.SparseIntArray;
+
+import java.util.HashMap;
 import java.util.UUID;
 
 import static com.davidjeastman.tufftrivia.R.string.stage;
@@ -15,6 +18,9 @@ public class Profile {
 
     public static final double SKILL_ADJUST = 0.25;
 
+    public static final int[] NEXT_LEVEL_THRESHOLDS =
+            {-1, 4000, 9000, 12000, 16000, 21000, 25000, 31000};
+
     private UUID mId;
     private String mName;
     private String mLocation;
@@ -23,6 +29,8 @@ public class Profile {
     private int mSkill;
     private int mPoints;
     private int mRank;
+
+
 
     public Profile() { this(UUID.randomUUID()); }
 
@@ -106,4 +114,5 @@ public class Profile {
     public void setRank(int rank) {
         mRank = rank;
     }
+
 }
