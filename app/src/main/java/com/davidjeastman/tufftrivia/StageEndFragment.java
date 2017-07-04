@@ -1,13 +1,18 @@
 package com.davidjeastman.tufftrivia;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,6 +20,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.attr.fraction;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -36,6 +43,16 @@ public class StageEndFragment extends Fragment {
     private int mNumCorrect;
     private int mStagePoints;
     private int mTimeBonusPoints;
+
+    TextView mStageEndMessageTextView;
+    TextView mStageEndSubtitleTextView;
+    TextView mStageEndCorrectAnswersTextView;
+    ProgressBar1000 mStageEndPointsFractionProgressBar;
+    TextView mStageEndPointsFractionTextView;
+    TextView mStageEndPointsAbbrevTextView;
+    TextView mStageEndTimeBonusPtsAbbrevTextView;
+    Button mStageEndContinueTryAgainButton;
+
 
     private boolean mIsUpdated = false;
 
@@ -73,14 +90,14 @@ public class StageEndFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stage_end, container, false);
 
-        TextView mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
-        TextView mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
-        TextView mStageEndCorrectAnswersTextView = v.findViewById(R.id.stage_end_correct_answers_textview);
-        ProgressBar mStageEndPointsFractionProgressBar = v.findViewById(R.id.stage_end_points_fraction_progress_bar);
-        TextView mStageEndPointsFractionTextView = v.findViewById(R.id.stage_end_points_fraction_text_view);
-        TextView mStageEndPointsAbbrevTextView = v.findViewById(R.id.stage_end_points_points_abbrev_textview);
-        TextView mStageEndTimeBonusPtsAbbrevTextView = v.findViewById(R.id.stage_end_time_bonus_points_abbrev_textview);
-        Button mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
+        mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
+        mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
+        mStageEndCorrectAnswersTextView = v.findViewById(R.id.stage_end_correct_answers_textview);
+        mStageEndPointsFractionProgressBar = v.findViewById(R.id.stage_end_points_fraction_progress_bar);
+        mStageEndPointsFractionTextView = v.findViewById(R.id.stage_end_points_fraction_text_view);
+        mStageEndPointsAbbrevTextView = v.findViewById(R.id.stage_end_points_points_abbrev_textview);
+        mStageEndTimeBonusPtsAbbrevTextView = v.findViewById(R.id.stage_end_time_bonus_points_abbrev_textview);
+        mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
 
         mQuestions = (ArrayList) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
 
@@ -96,6 +113,7 @@ public class StageEndFragment extends Fragment {
         }
 
         boolean isStagePassed = calculateScore();
+        //int initialPoints;
         if (!mIsUpdated) {
             updateProfile(isStagePassed);
             mProfile = ProfileManager.get(getActivity()).getProfile();
@@ -124,9 +142,9 @@ public class StageEndFragment extends Fragment {
                 .setText(getString(R.string.correct_answers, mNumCorrect, mQuestions.size()));
         int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
 
-        mStageEndPointsFractionProgressBar
-                .setProgress((int) (((double) mProfile.getPoints()
-                        / next_level_point_threshold) * 100));
+//        mStageEndPointsFractionProgressBar
+//                .setProgress((int) (((double) mProfile.getPoints()
+//                        / next_level_point_threshold) * 100));
         mStageEndPointsFractionTextView
                 .setText(getString(R.string.points_fraction,
                         mProfile.getPoints(), next_level_point_threshold));
@@ -165,23 +183,36 @@ public class StageEndFragment extends Fragment {
 
     private void updateProfile(boolean isStagePassed) {
         mIsUpdated = true;
-        ProfileManager pm = ProfileManager.get(getActivity());
-        Profile profile = pm.getProfile();
         if (isStagePassed) {
-            profile.increaseSkill();
-            profile.increaseStage();
+            mProfile.increaseSkill();
+            mProfile.increaseStage();
 
-            profile.setPoints(mProfile.getPoints() + mStagePoints);
+            int pointsBeforeAdding = mProfile.getPoints();
 
-            if (profile.getPoints() > Profile.NEXT_LEVEL_THRESHOLDS[profile.getLevel()])
-                profile.setLevel(profile.getLevel() + 1);
+            mProfile.setPoints(mProfile.getPoints() + mStagePoints);
 
-            pm.updateProfile(profile);
+            if (mProfile.getPoints() > Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()])
+                mProfile.setLevel(mProfile.getLevel() + 1);
+            else {
+                int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+
+                int initialFraction = (int) (((double) pointsBeforeAdding
+                        / next_level_point_threshold) * ProgressBar1000.MAX);
+                int updatedFraction = (int) (((double) this.mProfile.getPoints()
+                        / next_level_point_threshold) * ProgressBar1000.MAX);
+                ObjectAnimator progressAnimator = ObjectAnimator
+                        .ofInt(mStageEndPointsFractionProgressBar, "progress", initialFraction, updatedFraction);
+                progressAnimator.setDuration(2000);
+                progressAnimator.setInterpolator(new AccelerateInterpolator());
+                progressAnimator.start();
+            }
+
+            ProfileManager.get(getActivity()).updateProfile(mProfile);
         } else {
             mStagePoints = 0;
             mTimeBonusPoints = 0;
 
-            profile.reduceSkill();
+            mProfile.reduceSkill();
         }
     }
 

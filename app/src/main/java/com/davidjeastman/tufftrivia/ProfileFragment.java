@@ -21,14 +21,12 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
     private static final String ARG_PROFILE_ID = "profile_id";
-    private static final int TEST_NEXT_LEVEL_PTS = 4000;
-    //stage_end_points_fraction_progress_bar
 
     private Profile mProfile;
     private TextView mNameField;
     private TextView mLocationField;
     private TextView mLevelField;
-    private ProgressBar mNextLevelProgressBar;
+    private ProgressBar1000 mNextLevelProgressBar;
     private TextView mPointsField;
     private TextView mRankField;
 
@@ -96,7 +94,7 @@ public class ProfileFragment extends Fragment {
 
         mNextLevelProgressBar
                 .setProgress((int) (((double) mProfile.getPoints()
-                        / next_level_point_threshold) * 100));
+                        / next_level_point_threshold) * ProgressBar1000.MAX));
         mPointsField
                 .setText(getString(R.string.points_fraction,
                         mProfile.getPoints(), next_level_point_threshold));
