@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:style="http://schemas.android.com/tools">
 
     <include
         layout="@layout/textview_appnamebar"
@@ -193,6 +194,7 @@
 
 
     <Button
+        style="@style/AnswerButton"
         android:id="@+id/stage_end_continue_try_again_button"
         android:text=""
         android:layout_width="0dp"
