@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
                         / next_level_point_threshold) * ProgressBar1000.MAX));
         mPointsField
                 .setText(getString(R.string.points_fraction,
-                        mProfile.getPoints(), next_level_point_threshold));
+                        String.valueOf(mProfile.getPoints()), next_level_point_threshold));
         mRankField.setText(String.valueOf(mProfile.getRank()));
     }
 }

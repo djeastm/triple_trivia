@@ -1,27 +1,23 @@
 package com.davidjeastman.tufftrivia;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.fraction;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -33,17 +29,6 @@ public class StageEndFragment extends Fragment {
     private static final String ARG_QUESTION_LIST_ID = "question_list_id";
     private static final String KEY_UPDATED = "updated";
     private static final int TEST_NEXT_LEVEL_PTS = 4000;
-
-    private Profile mProfile;
-    private List<Question> mQuestions;
-
-    private RecyclerView mQuestionRecyclerView;
-    private QuestionAdapter mAdapter;
-
-    private int mNumCorrect;
-    private int mStagePoints;
-    private int mTimeBonusPoints;
-
     TextView mStageEndMessageTextView;
     TextView mStageEndSubtitleTextView;
     TextView mStageEndCorrectAnswersTextView;
@@ -52,8 +37,13 @@ public class StageEndFragment extends Fragment {
     TextView mStageEndPointsAbbrevTextView;
     TextView mStageEndTimeBonusPtsAbbrevTextView;
     Button mStageEndContinueTryAgainButton;
-
-
+    private Profile mProfile;
+    private List<Question> mQuestions;
+    private RecyclerView mQuestionRecyclerView;
+    private QuestionAdapter mAdapter;
+    private int mNumCorrect;
+    private int mStagePoints;
+    private int mTimeBonusPoints;
     private boolean mIsUpdated = false;
 
     private View.OnClickListener continueTryAgainButtonClick = new View.OnClickListener() {
@@ -145,9 +135,9 @@ public class StageEndFragment extends Fragment {
 //        mStageEndPointsFractionProgressBar
 //                .setProgress((int) (((double) mProfile.getPoints()
 //                        / next_level_point_threshold) * 100));
-        mStageEndPointsFractionTextView
-                .setText(getString(R.string.points_fraction,
-                        mProfile.getPoints(), next_level_point_threshold));
+//        mStageEndPointsFractionTextView
+//                .setText(getString(R.string.points_fraction,
+//                        mProfile.getPoints(), next_level_point_threshold));
         mStageEndPointsAbbrevTextView
                 .setText(String.valueOf(mStagePoints));
         mStageEndTimeBonusPtsAbbrevTextView
@@ -194,7 +184,8 @@ public class StageEndFragment extends Fragment {
             if (mProfile.getPoints() > Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()])
                 mProfile.setLevel(mProfile.getLevel() + 1);
             else {
-                int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+                int duration = 2000;
+                final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
 
                 int initialFraction = (int) (((double) pointsBeforeAdding
                         / next_level_point_threshold) * ProgressBar1000.MAX);
@@ -202,9 +193,25 @@ public class StageEndFragment extends Fragment {
                         / next_level_point_threshold) * ProgressBar1000.MAX);
                 ObjectAnimator progressAnimator = ObjectAnimator
                         .ofInt(mStageEndPointsFractionProgressBar, "progress", initialFraction, updatedFraction);
-                progressAnimator.setDuration(2000);
+                progressAnimator.setDuration(duration);
                 progressAnimator.setInterpolator(new AccelerateInterpolator());
-                progressAnimator.start();
+
+                ValueAnimator pointsAnimator = ValueAnimator
+                        .ofInt(pointsBeforeAdding, mProfile.getPoints());
+                pointsAnimator.setDuration(duration);
+                pointsAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        mStageEndPointsFractionTextView
+                                .setText(getString(R.string.points_fraction,
+                                        valueAnimator.getAnimatedValue().toString(), next_level_point_threshold));
+                    }
+                });
+
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.play(progressAnimator).with(pointsAnimator);
+                animatorSet.start();
             }
 
             ProfileManager.get(getActivity()).updateProfile(mProfile);
