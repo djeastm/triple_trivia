@@ -103,7 +103,8 @@ public class StageEndFragment extends Fragment {
         }
 
         boolean isStagePassed = calculateScore();
-        //int initialPoints;
+        int thisStageNum = mProfile.getStage();
+
         if (!mIsUpdated) {
             updateProfile(isStagePassed);
             mProfile = ProfileManager.get(getActivity()).getProfile();
@@ -111,7 +112,7 @@ public class StageEndFragment extends Fragment {
 
         if (isStagePassed) {
             mStageEndMessageTextView
-                    .setText(getString(R.string.stage_completed, mProfile.getStage()));
+                    .setText(getString(R.string.stage_completed, thisStageNum));
             mStageEndMessageTextView
                     .setTextColor(ContextCompat.getColor(getContext(), R.color.mediumGreen));
             mStageEndContinueTryAgainButton
