@@ -27,8 +27,11 @@ public class StageEndFragment extends Fragment {
 
     private static final String TAG = "StageEndFragment";
     private static final String ARG_QUESTION_LIST_ID = "question_list_id";
+    private static final String ARG_TIME_ID = "time_id";
     private static final String KEY_UPDATED = "updated";
-    private static final int TEST_NEXT_LEVEL_PTS = 4000;
+    private static final int POINTS_MULTIPLIER = 50;
+    private static final int TIME_BONUS_MULTIPLIER = 25;
+
     TextView mStageEndMessageTextView;
     TextView mStageEndSubtitleTextView;
     TextView mStageEndCorrectAnswersTextView;
@@ -43,6 +46,7 @@ public class StageEndFragment extends Fragment {
     private QuestionAdapter mAdapter;
     private int mNumCorrect;
     private int mStagePoints;
+    private int mTime;
     private int mTimeBonusPoints;
     private boolean mIsUpdated = false;
 
@@ -56,9 +60,10 @@ public class StageEndFragment extends Fragment {
         }
     };
 
-    public static StageEndFragment newInstance(ArrayList<Question> questions) {
+    public static StageEndFragment newInstance(ArrayList<Question> questions, long time) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_QUESTION_LIST_ID, questions);
+        args.putLong(ARG_TIME_ID, time);
         StageEndFragment fragment = new StageEndFragment();
         fragment.setArguments(args);
         return fragment;
@@ -90,7 +95,7 @@ public class StageEndFragment extends Fragment {
         mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
 
         mQuestions = (ArrayList) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
-
+        mTime = (int) getArguments().getLong(ARG_TIME_ID);
         mQuestionRecyclerView = v.findViewById(R.id.question_recycler_view);
         mQuestionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -159,13 +164,15 @@ public class StageEndFragment extends Fragment {
     private boolean calculateScore() {
         mNumCorrect = 0;
         mStagePoints = 0;
+
         for (Question q : mQuestions) {
             if (q.isPlayerCorrect()) {
                 mNumCorrect++;
-                mStagePoints = mStagePoints + q.getDifficulty() * 100;
+                mStagePoints = mStagePoints + q.getDifficulty() * POINTS_MULTIPLIER;
             }
         }
 
+        mTimeBonusPoints = (mTime/1000) * TIME_BONUS_MULTIPLIER;
         double threshold = mQuestions.size() * .7;
         boolean isStagePassed = mNumCorrect > threshold;
 
@@ -180,7 +187,7 @@ public class StageEndFragment extends Fragment {
 
             int pointsBeforeAdding = mProfile.getPoints();
 
-            mProfile.setPoints(mProfile.getPoints() + mStagePoints);
+            mProfile.setPoints(mProfile.getPoints() + mStagePoints + mTimeBonusPoints);
 
             if (mProfile.getPoints() > Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()])
                 mProfile.setLevel(mProfile.getLevel() + 1);
