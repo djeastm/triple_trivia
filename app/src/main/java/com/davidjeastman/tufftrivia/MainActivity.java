@@ -33,8 +33,8 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public int getCount() {
-                return 4;
-            }
+                return 1;
+            } // Change to add other tabs
 
             @Override
             public CharSequence getPageTitle(int position) {
