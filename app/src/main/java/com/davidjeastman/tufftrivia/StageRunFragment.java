@@ -1,6 +1,10 @@
 package com.davidjeastman.tufftrivia;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
@@ -16,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +32,11 @@ import java.util.List;
 public class StageRunFragment extends Fragment {
 
     private static final String TAG = "StageRunFragment";
+    private static final String SOUNDS_FOLDER = "stage_sounds";
+    private static final String CORRECT_SOUND = "Bing";
+    private static final String INCORRECT_SOUND = "Whiff";
+    private static final int MAX_SOUNDS = 2;
+
     Button[] allButtons = new Button[4];
     private TextView mAppNameTextView;
     private TextView mQuestionTextView;
@@ -45,6 +55,10 @@ public class StageRunFragment extends Fragment {
     private boolean isRoundOver;
     private boolean isQuestionOver;
 
+    private AssetManager mAssets;
+    private List<Sound> mSounds = new ArrayList<>();
+    private SoundPool mSoundPool;
+
     private View.OnClickListener answerButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -57,7 +71,7 @@ public class StageRunFragment extends Fragment {
                 if (thisButton.getText().equals(mCurrentQuestion.getCorrectAnswer())) {
                     mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(true);
                     thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
-
+                    play(CORRECT_SOUND);
                 } else {
                     mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(false);
                     thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_incorrect));
@@ -66,6 +80,7 @@ public class StageRunFragment extends Fragment {
                         if (b.getText().equals(mCurrentQuestion.getCorrectAnswer()))
                             b.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
                     }
+                    play(INCORRECT_SOUND);
                 }
                 isQuestionOver = true;
                 endQuestion();
@@ -90,6 +105,8 @@ public class StageRunFragment extends Fragment {
         int skill = profile.getSkill();
         mQuestions = QuestionManager.get(getActivity()).getNextTripleSet(skill);
         mCurrentQuestionNumber = 0;
+
+        mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
     }
 
     @Override
@@ -138,8 +155,13 @@ public class StageRunFragment extends Fragment {
             startQuestion();
         }
 
+        mAssets = context.getAssets();
+        loadSounds();
+
         return v;
     }
+
+
 
     private void startQuestion() {
         if (!isRoundOver) {
@@ -229,5 +251,55 @@ public class StageRunFragment extends Fragment {
                 .commit();
     }
 
+    void loadSounds() {
+        String[] soundNames;
+        try {
+            soundNames = mAssets.list(SOUNDS_FOLDER);
+            //Log.i(TAG, "Found " + soundNames.length + " stage_sounds");
+            //for (String s : soundNames) Log.i(TAG, s);
+        } catch (IOException ioe) {
+            Log.e(TAG, "Could not list assets", ioe);
+            return;
+        }
+
+        for (String filename : soundNames) {
+            try {
+                String assetPath = SOUNDS_FOLDER + "/" + filename;
+                Sound sound = new Sound(assetPath);
+                load(sound);
+                mSounds.add(sound);
+            }catch (IOException ioe) {
+                Log.e(TAG, "Could not load sound " + filename, ioe);
+            }
+        }
+    }
+
+    public void play(String soundFilename) {
+        int soundId;
+        switch (soundFilename) {
+            case CORRECT_SOUND:
+                soundId = mSounds.get(0).getSoundId();
+                break;
+            case INCORRECT_SOUND:
+                soundId = mSounds.get(1).getSoundId();
+                break;
+            default:
+                soundId = mSounds.get(0).getSoundId();
+        }
+
+        mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+    }
+
+    private void load(Sound sound) throws IOException {
+        AssetFileDescriptor afd = mAssets.openFd(sound.getAssetPath());
+        int soundId = mSoundPool.load(afd, 1);
+        sound.setSoundId(soundId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mSoundPool.release();
+    }
 
 }
