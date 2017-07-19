@@ -11,17 +11,19 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +34,7 @@ import java.util.List;
 public class StageRunFragment extends Fragment {
 
     private static final String TAG = "StageRunFragment";
-    private static final int TIMER_SECONDS = 90;
+    private static final int TIMER_SECONDS = 10;
 
     private static final String SOUNDS_FOLDER = "stage_sounds";
     private static final String CORRECT_SOUND = "Bing";
@@ -42,6 +44,7 @@ public class StageRunFragment extends Fragment {
     Button[] allButtons = new Button[4];
     private TextView mAppNameTextView;
     private TextView mQuestionTextView;
+    private Button mFiftyFiftyButton;
     private Button mAnswerButton1;
     private Button mAnswerButton2;
     private Button mAnswerButton3;
@@ -55,6 +58,10 @@ public class StageRunFragment extends Fragment {
     private Question mCurrentQuestion;
     private boolean isRoundOver;
     private boolean isQuestionOver;
+    private long mStageTimeLeft;
+    CountDownTimer mCountDownTimer;
+    CountDownTimer mStartQuestionTimer;
+    CountDownTimer mEndQuestionTimer;
 
     private AssetManager mAssets;
     private List<Sound> mSounds = new ArrayList<>();
@@ -122,10 +129,13 @@ public class StageRunFragment extends Fragment {
         final Button timerButton = v.findViewById(R.id.timer_box_button);
         timerButton.setText(String.valueOf(TIMER_SECONDS));
 
-        CountDownTimer timer = new CountDownTimer((TIMER_SECONDS+1)*1000, 1000) {
+        mFiftyFiftyButton = v.findViewById(R.id.fifty_fifty_button);
+
+        mCountDownTimer = new CountDownTimer((TIMER_SECONDS+1)*1000, 1000) {
             @Override
             public void onTick(long l) {
                 timerButton.setText(String.valueOf(l/1000));
+                mStageTimeLeft = l;
             }
 
             @Override
@@ -133,6 +143,13 @@ public class StageRunFragment extends Fragment {
                 loadEndStage();
             }
         };
+
+        mFiftyFiftyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeTwoAnswerButtons();
+            }
+        });
 
         // Debug cheat to end stage fast
         timerButton.setOnClickListener(new View.OnClickListener() {
@@ -172,15 +189,32 @@ public class StageRunFragment extends Fragment {
 
         mAssets = context.getAssets();
         loadSounds();
-        timer.start();
+        mCountDownTimer.start();
         return v;
     }
 
+    void removeTwoAnswerButtons() {
+        // Shuffle the buttons
+        List<Button> buttons = Arrays.asList(allButtons);
+        Collections.shuffle(buttons);
 
+        // Remove two (checking that they're not the correct answer)
+        int count = 0;
+        for (Button b : buttons) {
+            if (!b.getText().equals(mCurrentQuestion.getCorrectAnswer())) {
+                b.setVisibility(View.INVISIBLE);
+                count++;
+            }
+            if (count == 2) break;
+        }
+
+        mFiftyFiftyButton.setEnabled(false);
+        mFiftyFiftyButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
+    }
 
     private void startQuestion() {
         if (!isRoundOver) {
-            new CountDownTimer(1000, 1000) {
+            mStartQuestionTimer = new CountDownTimer(1000, 1000) {
 
                 @Override
                 public void onTick(long l) {
@@ -202,7 +236,7 @@ public class StageRunFragment extends Fragment {
 
     private void endQuestion() {
 
-        new CountDownTimer(1500, 1500) {
+        mEndQuestionTimer = new CountDownTimer(1500, 1500) {
             @Override
             public void onTick(long l) {
 
@@ -210,7 +244,6 @@ public class StageRunFragment extends Fragment {
 
             @Override
             public void onFinish() {
-
                 getNextQuestion();
                 startQuestion();
                 TransitionManager.beginDelayedTransition(mConstraintLayout);
@@ -260,10 +293,14 @@ public class StageRunFragment extends Fragment {
     }
 
     private void loadEndStage() {
-        StageEndFragment nextFrag = StageEndFragment.newInstance((ArrayList<Question>) mQuestions);
-        getFragmentManager().beginTransaction()
+
+        if (getFragmentManager() != null) {
+        StageEndFragment nextFrag = StageEndFragment
+                .newInstance((ArrayList<Question>) mQuestions, mStageTimeLeft);
+                getFragmentManager().beginTransaction()
                 .replace(R.id.stage_container, nextFrag, TAG)
                 .commit();
+        }
     }
 
     void loadSounds() {
@@ -317,4 +354,15 @@ public class StageRunFragment extends Fragment {
         mSoundPool.release();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mCountDownTimer != null)
+            mCountDownTimer.cancel();
+        if (mStartQuestionTimer != null)
+            mStartQuestionTimer.cancel();
+        if (mEndQuestionTimer != null)
+            mEndQuestionTimer.cancel();
+
+    }
 }
