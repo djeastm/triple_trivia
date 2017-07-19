@@ -29,7 +29,7 @@
         android:background="@drawable/textview_question"
         app:layout_constraintTop_toBottomOf="@+id/app_name_textview"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/correct_box_imageview"
+        app:layout_constraintBottom_toTopOf="@+id/timer_box_button"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="24dp"
@@ -37,11 +37,15 @@
         android:layout_marginTop="16dp"
         />
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/correct_box_imageview"
+    <Button
+        android:id="@+id/timer_box_button"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:elevation="4dp"
         android:background="?attr/colorAccent"
+        android:text="00"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/question_textview"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/answer_button_1"
@@ -54,7 +58,7 @@
         android:text="@string/answer_button_1"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        app:layout_constraintTop_toBottomOf="@+id/correct_box_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/timer_box_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/answer_button_2"
         app:layout_constraintLeft_toLeftOf="parent"

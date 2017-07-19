@@ -32,6 +32,8 @@ import java.util.List;
 public class StageRunFragment extends Fragment {
 
     private static final String TAG = "StageRunFragment";
+    private static final int TIMER_SECONDS = 90;
+
     private static final String SOUNDS_FOLDER = "stage_sounds";
     private static final String CORRECT_SOUND = "Bing";
     private static final String INCORRECT_SOUND = "Whiff";
@@ -40,7 +42,6 @@ public class StageRunFragment extends Fragment {
     Button[] allButtons = new Button[4];
     private TextView mAppNameTextView;
     private TextView mQuestionTextView;
-    private ImageView mCorrectBox;
     private Button mAnswerButton1;
     private Button mAnswerButton2;
     private Button mAnswerButton3;
@@ -118,9 +119,23 @@ public class StageRunFragment extends Fragment {
         mConstraintLayout = (ConstraintLayout) v;
         mPrepostConstraintSet.clone(mConstraintLayout);
 
-        ImageView correctBox = v.findViewById(R.id.correct_box_imageview);
+        final Button timerButton = v.findViewById(R.id.timer_box_button);
+        timerButton.setText(String.valueOf(TIMER_SECONDS));
+
+        CountDownTimer timer = new CountDownTimer((TIMER_SECONDS+1)*1000, 1000) {
+            @Override
+            public void onTick(long l) {
+                timerButton.setText(String.valueOf(l/1000));
+            }
+
+            @Override
+            public void onFinish() {
+                loadEndStage();
+            }
+        };
+
         // Debug cheat to end stage fast
-        correctBox.setOnClickListener(new View.OnClickListener() {
+        timerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 for (Question q : mQuestions) {
@@ -157,7 +172,7 @@ public class StageRunFragment extends Fragment {
 
         mAssets = context.getAssets();
         loadSounds();
-
+        timer.start();
         return v;
     }
 
