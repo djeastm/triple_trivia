@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class StageEndFragment extends Fragment {
     private static final String KEY_UPDATED = "updated";
     private static final int POINTS_MULTIPLIER = 50;
     private static final int TIME_BONUS_MULTIPLIER = 25;
+    private static final int NUM_REQUIRED_CORRECT = 6;
 
     TextView mStageEndMessageTextView;
     TextView mStageEndSubtitleTextView;
@@ -42,8 +44,7 @@ public class StageEndFragment extends Fragment {
     Button mStageEndContinueTryAgainButton;
 
     private Profile mProfile;
-    private List<Question> mQuestions;
-    private RecyclerView mQuestionRecyclerView;
+    private ArrayList<Question> mQuestions;
     private QuestionAdapter mAdapter;
     private int mNumCorrect;
     private int mStagePoints;
@@ -94,14 +95,20 @@ public class StageEndFragment extends Fragment {
         mStageEndTimeBonusPtsAbbrevTextView = v.findViewById(R.id.stage_end_time_bonus_points_abbrev_textview);
         mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
 
-        mQuestions = (ArrayList) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
+        mQuestions = (ArrayList<Question>) getArguments().getSerializable(ARG_QUESTION_LIST_ID);
+        ArrayList<Question> toRemove = new ArrayList<>();
+        for (Question q: mQuestions) {
+            if (!q.isQuestionSeen()) toRemove.add(q);
+        }
+        mQuestions.removeAll(toRemove);
+
         mTime = (int) getArguments().getLong(ARG_TIME_ID);
-        mQuestionRecyclerView = v.findViewById(R.id.question_recycler_view);
-        mQuestionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView questionRecyclerView = v.findViewById(R.id.question_recycler_view);
+        questionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         if (mAdapter == null) {
             mAdapter = new QuestionAdapter(mQuestions);
-            mQuestionRecyclerView.setAdapter(mAdapter);
+            questionRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setQuestions(mQuestions);
             mAdapter.notifyDataSetChanged();
@@ -173,7 +180,8 @@ public class StageEndFragment extends Fragment {
         }
 
         mTimeBonusPoints = (mTime/1000) * TIME_BONUS_MULTIPLIER;
-        double threshold = mQuestions.size() * .7;
+        //double threshold = mQuestions.size() * .7;
+        double threshold = NUM_REQUIRED_CORRECT;
 
         return mNumCorrect > threshold;
     }
@@ -237,6 +245,7 @@ public class StageEndFragment extends Fragment {
 
         private TextView mQuestionTextView;
         private TextView mCorrectAnswerTextView;
+        private ImageView mImageView;
 
 
         public QuestionHolder(View v) {
@@ -244,10 +253,14 @@ public class StageEndFragment extends Fragment {
 
             mQuestionTextView = v.findViewById(R.id.list_item_question_textview);
             mCorrectAnswerTextView = v.findViewById(R.id.list_item_correct_answer_textview);
+            mImageView = v.findViewById(R.id.question_correct_imageview);
         }
 
         public void bindEntry(Question question) {
             mQuestion = question;
+            if (mQuestion.isPlayerCorrect())
+                mImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_accept,null));
+            else mImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_remove,null));
             mQuestionTextView.setText(mQuestion.getQuestion());
             mCorrectAnswerTextView.setText(mQuestion.getCorrectAnswer());
         }
@@ -261,7 +274,7 @@ public class StageEndFragment extends Fragment {
     private class QuestionAdapter extends RecyclerView.Adapter<QuestionHolder> {
 
 
-        public QuestionAdapter(List<Question> questions) {
+        public QuestionAdapter(ArrayList<Question> questions) {
             mQuestions = questions;
         }
 
@@ -284,7 +297,7 @@ public class StageEndFragment extends Fragment {
             return mQuestions.size();
         }
 
-        public void setQuestions(List<Question> questions) {
+        public void setQuestions(ArrayList<Question> questions) {
             mQuestions = questions;
         }
     }
