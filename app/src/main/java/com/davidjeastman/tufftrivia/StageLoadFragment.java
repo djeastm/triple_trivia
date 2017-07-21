@@ -20,6 +20,7 @@ public class StageLoadFragment extends Fragment {
     private static final int mSeconds = 3;
 
     private TextView mStageNumberTextView;
+    private CountDownTimer mCountDownTimer;
 
     public static StageLoadFragment newInstance() {
         Bundle args = new Bundle();
@@ -47,7 +48,7 @@ public class StageLoadFragment extends Fragment {
 
         final CircleProgressBar countdownTimerProgressBar = v.findViewById(R.id.countdown_circle_progressbar);
 
-        new CountDownTimer((mSeconds + 1) * 1000, 10) {
+        mCountDownTimer = new CountDownTimer((mSeconds + 1) * 1000, 10) {
             @Override
             public void onTick(long l) {
                 if (l > 1000) {
@@ -72,4 +73,9 @@ public class StageLoadFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mCountDownTimer.cancel();
+    }
 }

@@ -40,6 +40,7 @@ public class StageEndFragment extends Fragment {
     TextView mStageEndPointsAbbrevTextView;
     TextView mStageEndTimeBonusPtsAbbrevTextView;
     Button mStageEndContinueTryAgainButton;
+
     private Profile mProfile;
     private List<Question> mQuestions;
     private RecyclerView mQuestionRecyclerView;
@@ -78,7 +79,6 @@ public class StageEndFragment extends Fragment {
         if (savedInstanceState != null) {
             mIsUpdated = savedInstanceState.getBoolean(KEY_UPDATED);
         }
-
     }
 
     @Override
@@ -174,9 +174,8 @@ public class StageEndFragment extends Fragment {
 
         mTimeBonusPoints = (mTime/1000) * TIME_BONUS_MULTIPLIER;
         double threshold = mQuestions.size() * .7;
-        boolean isStagePassed = mNumCorrect > threshold;
 
-        return isStagePassed;
+        return mNumCorrect > threshold;
     }
 
     private void updateProfile(boolean isStagePassed) {
