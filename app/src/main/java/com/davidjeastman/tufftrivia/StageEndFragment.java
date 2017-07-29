@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class StageEndFragment extends Fragment {
     private static final int POINTS_MULTIPLIER = 50;
     private static final int TIME_BONUS_MULTIPLIER = 25;
     private static final int NUM_REQUIRED_CORRECT = 6;
+    private static final int ANIMATION_DURATION = 1750;
 
     TextView mStageEndMessageTextView;
     TextView mStageEndSubtitleTextView;
@@ -193,15 +195,78 @@ public class StageEndFragment extends Fragment {
             mProfile.increaseStage();
 
             int pointsBeforeAdding = mProfile.getPoints();
+            int levelPoints = mStagePoints + mTimeBonusPoints;
+            int newTotalPoints = mProfile.getPoints() + levelPoints;
+            mProfile.setPoints(newTotalPoints);
+            int duration = ANIMATION_DURATION;
+            final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
 
-            mProfile.setPoints(mProfile.getPoints() + mStagePoints + mTimeBonusPoints);
+            if (newTotalPoints > next_level_point_threshold) {
+                // Split animations
+                // Part 1 - Complete current level
+                int part1Points = next_level_point_threshold - pointsBeforeAdding;
+//                int duration1 = (int) (duration * ((double) part1Points/levelPoints));
+                int duration1 = duration;
+                int initialFraction = (int) (((double) pointsBeforeAdding
+                        / next_level_point_threshold) * ProgressBar1000.MAX);
+                int updatedFraction = ProgressBar1000.MAX;
+                ObjectAnimator progressAnimator1 = ObjectAnimator
+                        .ofInt(mStageEndPointsFractionProgressBar, "progress",
+                                initialFraction, updatedFraction);
+                progressAnimator1.setDuration(duration1);
+                progressAnimator1.setInterpolator(new AccelerateInterpolator());
 
-            if (mProfile.getPoints() > Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()])
+                ValueAnimator pointsAnimator1 = ValueAnimator
+                        .ofInt(pointsBeforeAdding, next_level_point_threshold);
+                pointsAnimator1.setDuration(duration1);
+                pointsAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        mStageEndPointsFractionTextView
+                                .setText(getString(R.string.points_fraction,
+                                        valueAnimator.getAnimatedValue().toString(), next_level_point_threshold));
+                    }
+                });
+
+                // Change level
+                int part2Points = newTotalPoints - next_level_point_threshold;
                 mProfile.setLevel(mProfile.getLevel() + 1);
-            else {
-                int duration = 1750;
-                final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+                final int next_next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
 
+                // Part 2
+
+//                int duration2 = (int) (duration * ((double) part2Points/levelPoints));
+                int duration2 = duration;
+                initialFraction = (int) (((double) pointsBeforeAdding
+                        / next_next_level_point_threshold) * ProgressBar1000.MAX);;
+                updatedFraction = (int) (((double) newTotalPoints
+                        / next_next_level_point_threshold) * ProgressBar1000.MAX);
+                ObjectAnimator progressAnimator2 = ObjectAnimator
+                        .ofInt(mStageEndPointsFractionProgressBar, "progress",
+                                initialFraction, updatedFraction);
+                progressAnimator2.setDuration(duration2);
+                progressAnimator2.setInterpolator(new AccelerateInterpolator());
+
+                ValueAnimator pointsAnimator2 = ValueAnimator
+                        .ofInt(next_level_point_threshold, mProfile.getPoints());
+                pointsAnimator2.setDuration(duration2);
+                pointsAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        mStageEndPointsFractionTextView
+                                .setText(getString(R.string.points_fraction,
+                                        valueAnimator.getAnimatedValue().toString(), next_next_level_point_threshold));
+                    }
+                });
+
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.play(progressAnimator1).with(pointsAnimator1).before(progressAnimator2);
+                animatorSet.play(progressAnimator2).with(pointsAnimator2);
+                animatorSet.start();
+            }
+            else {
                 int initialFraction = (int) (((double) pointsBeforeAdding
                         / next_level_point_threshold) * ProgressBar1000.MAX);
                 int updatedFraction = (int) (((double) this.mProfile.getPoints()

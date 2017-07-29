@@ -10,7 +10,7 @@ public class Profile {
 
     public static final double SKILL_ADJUST = 0.25;
     public static final int[] NEXT_LEVEL_THRESHOLDS =
-            {-1, 4000, 9000, 12000, 16000, 21000, 25000, 31000};
+            {-1, 800, 1600, 2500, 3500, 4600, 5700, 6800};
     private static final int SKILL_START = 1;
     private static final int SKILL_MAX = 3;
     private UUID mId;

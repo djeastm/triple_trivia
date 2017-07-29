@@ -34,7 +34,7 @@ import java.util.List;
 public class StageRunFragment extends Fragment {
 
     private static final String TAG = "StageRunFragment";
-    private static final int TIMER_SECONDS = 10;
+    private static final int TIMER_SECONDS = 90;
 
     private static final String SOUNDS_FOLDER = "stage_sounds";
     private static final String CORRECT_SOUND = "Bing";
@@ -155,13 +155,14 @@ public class StageRunFragment extends Fragment {
         timerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mStageTimeLeft = 2000;
                 for (Question q : mQuestions) {
-
-                    q.setQuestionSeen(false);
+                    q.setQuestionSeen(true);
                     q.setPlayerAnswer(q.getCorrectAnswer());
                     q.setPlayerCorrect(true);
                     QuestionManager.get(getActivity()).updateQuestion(q);
                 }
+
                 loadEndStage();
             }
         });
@@ -293,8 +294,8 @@ public class StageRunFragment extends Fragment {
     }
 
     private void loadEndStage() {
-
         if (getFragmentManager() != null) {
+
         StageEndFragment nextFrag = StageEndFragment
                 .newInstance((ArrayList<Question>) mQuestions, mStageTimeLeft);
                 getFragmentManager().beginTransaction()
@@ -339,7 +340,7 @@ public class StageRunFragment extends Fragment {
                 soundId = mSounds.get(0).getSoundId();
         }
 
-        mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+        mSoundPool.play(soundId, 0.7f, 0.7f, 1, 0, 1.0f);
     }
 
     private void load(Sound sound) throws IOException {
@@ -352,17 +353,18 @@ public class StageRunFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mSoundPool.release();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
         if (mCountDownTimer != null)
             mCountDownTimer.cancel();
         if (mStartQuestionTimer != null)
             mStartQuestionTimer.cancel();
         if (mEndQuestionTimer != null)
             mEndQuestionTimer.cancel();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
 
     }
 }
