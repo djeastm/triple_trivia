@@ -66,7 +66,7 @@
 
     <TextView
         android:id="@+id/stage_end_next_level_score_textview"
-        android:text="@string/next_level_score"
+        android:text="@string/progress_to_level"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"

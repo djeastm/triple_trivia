@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.davidjeastman.tufftrivia.R.id.stage_end_points_fraction_text_view;
 
 /**
  * Created by David Eastman on 6/22/2017.
@@ -34,16 +36,19 @@ public class StageEndFragment extends Fragment {
     private static final int POINTS_MULTIPLIER = 50;
     private static final int TIME_BONUS_MULTIPLIER = 25;
     private static final int NUM_REQUIRED_CORRECT = 6;
-    private static final int ANIMATION_DURATION = 1750;
+    private static final int PROGRESS_ANIMATION_DURATION = 1750;
+    private static final int SPIN_ANIMATION_DURATION = 1000;
 
     TextView mStageEndMessageTextView;
     TextView mStageEndSubtitleTextView;
     TextView mStageEndCorrectAnswersTextView;
+    TextView mStageEndNextLevelTextView;
     ProgressBar1000 mStageEndPointsFractionProgressBar;
     TextView mStageEndPointsFractionTextView;
     TextView mStageEndPointsAbbrevTextView;
     TextView mStageEndTimeBonusPtsAbbrevTextView;
     Button mStageEndContinueTryAgainButton;
+    CountDownTimer mLevelChangeTimer;
 
     private Profile mProfile;
     private ArrayList<Question> mQuestions;
@@ -91,8 +96,9 @@ public class StageEndFragment extends Fragment {
         mStageEndMessageTextView = v.findViewById(R.id.stage_end_message_textview);
         mStageEndSubtitleTextView = v.findViewById(R.id.stage_end_subtitle_textview);
         mStageEndCorrectAnswersTextView = v.findViewById(R.id.stage_end_correct_answers_textview);
+        mStageEndNextLevelTextView = v.findViewById(R.id.stage_end_next_level_score_textview);
         mStageEndPointsFractionProgressBar = v.findViewById(R.id.stage_end_points_fraction_progress_bar);
-        mStageEndPointsFractionTextView = v.findViewById(R.id.stage_end_points_fraction_text_view);
+        mStageEndPointsFractionTextView = v.findViewById(stage_end_points_fraction_text_view);
         mStageEndPointsAbbrevTextView = v.findViewById(R.id.stage_end_points_points_abbrev_textview);
         mStageEndTimeBonusPtsAbbrevTextView = v.findViewById(R.id.stage_end_time_bonus_points_abbrev_textview);
         mStageEndContinueTryAgainButton = v.findViewById(R.id.stage_end_continue_try_again_button);
@@ -145,14 +151,10 @@ public class StageEndFragment extends Fragment {
 
         mStageEndCorrectAnswersTextView
                 .setText(getString(R.string.correct_answers, mNumCorrect, mQuestions.size()));
-        int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
-
-//        mStageEndPointsFractionProgressBar
-//                .setProgress((int) (((double) mProfile.getPoints()
-//                        / next_level_point_threshold) * 100));
-//        mStageEndPointsFractionTextView
-//                .setText(getString(R.string.points_fraction,
-//                        mProfile.getPoints(), next_level_point_threshold));
+        String progress_to_next_level =
+                getString(R.string.progress_to_level) + " " + (mProfile.getLevel() + 1);
+        mStageEndNextLevelTextView
+                .setText(progress_to_next_level);
         mStageEndPointsAbbrevTextView
                 .setText(String.valueOf(mStagePoints));
         mStageEndTimeBonusPtsAbbrevTextView
@@ -198,7 +200,7 @@ public class StageEndFragment extends Fragment {
             int levelPoints = mStagePoints + mTimeBonusPoints;
             int newTotalPoints = mProfile.getPoints() + levelPoints;
             mProfile.setPoints(newTotalPoints);
-            int duration = ANIMATION_DURATION;
+            int duration = PROGRESS_ANIMATION_DURATION;
             final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
 
             if (newTotalPoints > next_level_point_threshold) {
@@ -229,13 +231,43 @@ public class StageEndFragment extends Fragment {
                     }
                 });
 
+
+                final int newLevel = mProfile.getLevel() + 1;
+
                 // Change level
-                int part2Points = newTotalPoints - next_level_point_threshold;
-                mProfile.setLevel(mProfile.getLevel() + 1);
-                final int next_next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+                long levelChangeDuration = SPIN_ANIMATION_DURATION + PROGRESS_ANIMATION_DURATION;
+                mLevelChangeTimer = new CountDownTimer(
+                        levelChangeDuration, levelChangeDuration) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        mProfile.setLevel(newLevel);
+                        String progress_to_next_level =
+                                getString(R.string.progress_to_level) + " " + (newLevel + 1);
+                        mStageEndNextLevelTextView
+                                .setText(progress_to_next_level);
+                        ProfileManager.get(getActivity()).updateProfile(mProfile);
+                    }
+                }.start();
+
+                final int next_next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[newLevel];
+                ObjectAnimator levelChangeAnimatorBar = ObjectAnimator
+                        .ofFloat(mStageEndPointsFractionProgressBar, "rotation",
+                                0f, 360f);
+                levelChangeAnimatorBar.setDuration(SPIN_ANIMATION_DURATION);
+                levelChangeAnimatorBar.setInterpolator(new AccelerateInterpolator());
+                ObjectAnimator levelChangeAnimatorPts = ObjectAnimator
+                        .ofFloat(mStageEndPointsFractionTextView, "rotation",
+                                0f, 360f);
+                levelChangeAnimatorPts.setDuration(SPIN_ANIMATION_DURATION);
+                levelChangeAnimatorPts.setInterpolator(new AccelerateInterpolator());
 
                 // Part 2
-
+                int part2Points = newTotalPoints - next_level_point_threshold;
 //                int duration2 = (int) (duration * ((double) part2Points/levelPoints));
                 int duration2 = duration;
                 initialFraction = (int) (((double) pointsBeforeAdding
@@ -262,7 +294,8 @@ public class StageEndFragment extends Fragment {
                 });
 
                 AnimatorSet animatorSet = new AnimatorSet();
-                animatorSet.play(progressAnimator1).with(pointsAnimator1).before(progressAnimator2);
+                animatorSet.play(progressAnimator1).with(pointsAnimator1).before(levelChangeAnimatorBar);
+                animatorSet.play(levelChangeAnimatorBar).with(levelChangeAnimatorPts).before(progressAnimator2);
                 animatorSet.play(progressAnimator2).with(pointsAnimator2);
                 animatorSet.start();
             }
@@ -293,9 +326,10 @@ public class StageEndFragment extends Fragment {
                 AnimatorSet animatorSet = new AnimatorSet();
                 animatorSet.play(progressAnimator).with(pointsAnimator);
                 animatorSet.start();
+
+                ProfileManager.get(getActivity()).updateProfile(mProfile);
             }
 
-            ProfileManager.get(getActivity()).updateProfile(mProfile);
         } else {
             mStagePoints = 0;
             mTimeBonusPoints = 0;
@@ -365,5 +399,11 @@ public class StageEndFragment extends Fragment {
         public void setQuestions(ArrayList<Question> questions) {
             mQuestions = questions;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mLevelChangeTimer != null) mLevelChangeTimer.cancel();
     }
 }
