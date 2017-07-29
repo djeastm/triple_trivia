@@ -17,11 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,9 +42,15 @@ public class StageRunFragment extends Fragment {
     private static final int MAX_SOUNDS = 2;
 
     Button[] allButtons = new Button[4];
+    CountDownTimer mCountDownTimer;
+    CountDownTimer mStartQuestionTimer;
+    CountDownTimer mEndQuestionTimer;
     private TextView mAppNameTextView;
     private TextView mQuestionTextView;
     private Button mFiftyFiftyButton;
+    private ImageView mLife1ImageView;
+    private ImageView mLife2ImageView;
+    private ImageView mLife3ImageView;
     private Button mAnswerButton1;
     private Button mAnswerButton2;
     private Button mAnswerButton3;
@@ -52,17 +58,13 @@ public class StageRunFragment extends Fragment {
     private ConstraintSet mPrepostConstraintSet = new ConstraintSet();
     private ConstraintSet mPlayConstraintSet = new ConstraintSet();
     private ConstraintLayout mConstraintLayout;
-
     private List<Question> mQuestions; // Every mStage has three triples, making 9 questions
     private int mCurrentQuestionNumber;
+    private int mNumberIncorrect;
     private Question mCurrentQuestion;
     private boolean isRoundOver;
     private boolean isQuestionOver;
     private long mStageTimeLeft;
-    CountDownTimer mCountDownTimer;
-    CountDownTimer mStartQuestionTimer;
-    CountDownTimer mEndQuestionTimer;
-
     private AssetManager mAssets;
     private List<Sound> mSounds = new ArrayList<>();
     private SoundPool mSoundPool;
@@ -89,6 +91,19 @@ public class StageRunFragment extends Fragment {
                             b.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
                     }
                     play(INCORRECT_SOUND);
+
+                    switch (++mNumberIncorrect) {
+                        case 1:
+                            mLife1ImageView.setVisibility(View.INVISIBLE);
+                            break;
+                        case 2:
+                            mLife2ImageView.setVisibility(View.INVISIBLE);
+                            break;
+                        case 3:
+                            mLife3ImageView.setVisibility(View.INVISIBLE);
+                            break;
+                    }
+
                 }
                 isQuestionOver = true;
                 endQuestion();
@@ -131,10 +146,14 @@ public class StageRunFragment extends Fragment {
 
         mFiftyFiftyButton = v.findViewById(R.id.fifty_fifty_button);
 
-        mCountDownTimer = new CountDownTimer((TIMER_SECONDS+1)*1000, 1000) {
+        mLife1ImageView = v.findViewById(R.id.life_1_imageview);
+        mLife2ImageView = v.findViewById(R.id.life_2_imageview);
+        mLife3ImageView = v.findViewById(R.id.life_3_imageview);
+
+        mCountDownTimer = new CountDownTimer((TIMER_SECONDS + 1) * 1000, 1000) {
             @Override
             public void onTick(long l) {
-                timerButton.setText(String.valueOf(l/1000));
+                timerButton.setText(String.valueOf(l / 1000));
                 mStageTimeLeft = l;
             }
 
@@ -284,7 +303,8 @@ public class StageRunFragment extends Fragment {
     }
 
     private void getNextQuestion() {
-        if (mCurrentQuestionNumber < mQuestions.size() - 1)
+        if (mCurrentQuestionNumber < mQuestions.size() - 1
+                && mNumberIncorrect < 3)
             mCurrentQuestion = mQuestions.get(++mCurrentQuestionNumber);
         else {
             Log.e(TAG, "No more questions. End stage.");
@@ -296,11 +316,11 @@ public class StageRunFragment extends Fragment {
     private void loadEndStage() {
         if (getFragmentManager() != null) {
 
-        StageEndFragment nextFrag = StageEndFragment
-                .newInstance((ArrayList<Question>) mQuestions, mStageTimeLeft);
-                getFragmentManager().beginTransaction()
-                .replace(R.id.stage_container, nextFrag, TAG)
-                .commit();
+            StageEndFragment nextFrag = StageEndFragment
+                    .newInstance((ArrayList<Question>) mQuestions, mStageTimeLeft);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.stage_container, nextFrag, TAG)
+                    .commit();
         }
     }
 
@@ -321,7 +341,7 @@ public class StageRunFragment extends Fragment {
                 Sound sound = new Sound(assetPath);
                 load(sound);
                 mSounds.add(sound);
-            }catch (IOException ioe) {
+            } catch (IOException ioe) {
                 Log.e(TAG, "Could not load sound " + filename, ioe);
             }
         }

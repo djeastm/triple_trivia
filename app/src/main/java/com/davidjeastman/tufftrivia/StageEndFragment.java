@@ -192,35 +192,36 @@ public class StageEndFragment extends Fragment {
 
     private void updateProfile(boolean isStagePassed) {
         mIsUpdated = true;
+        int pointsBeforeAdding = mProfile.getPoints();
+        final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+        int initialFraction = (int) (((double) pointsBeforeAdding
+                / next_level_point_threshold) * ProgressBar1000.MAX);
+        mStageEndPointsFractionProgressBar.setProgress(initialFraction);
+        mStageEndPointsFractionTextView.setText(getString(
+                R.string.points_fraction,String.valueOf(pointsBeforeAdding),next_level_point_threshold));
+
         if (isStagePassed) {
             mProfile.increaseSkill();
             mProfile.increaseStage();
 
-            int pointsBeforeAdding = mProfile.getPoints();
             int levelPoints = mStagePoints + mTimeBonusPoints;
             int newTotalPoints = mProfile.getPoints() + levelPoints;
             mProfile.setPoints(newTotalPoints);
             int duration = PROGRESS_ANIMATION_DURATION;
-            final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
 
             if (newTotalPoints > next_level_point_threshold) {
                 // Split animations
                 // Part 1 - Complete current level
-                int part1Points = next_level_point_threshold - pointsBeforeAdding;
-//                int duration1 = (int) (duration * ((double) part1Points/levelPoints));
-                int duration1 = duration;
-                int initialFraction = (int) (((double) pointsBeforeAdding
-                        / next_level_point_threshold) * ProgressBar1000.MAX);
                 int updatedFraction = ProgressBar1000.MAX;
                 ObjectAnimator progressAnimator1 = ObjectAnimator
                         .ofInt(mStageEndPointsFractionProgressBar, "progress",
                                 initialFraction, updatedFraction);
-                progressAnimator1.setDuration(duration1);
+                progressAnimator1.setDuration(duration);
                 progressAnimator1.setInterpolator(new AccelerateInterpolator());
 
                 ValueAnimator pointsAnimator1 = ValueAnimator
                         .ofInt(pointsBeforeAdding, next_level_point_threshold);
-                pointsAnimator1.setDuration(duration1);
+                pointsAnimator1.setDuration(duration);
                 pointsAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
                     @Override
@@ -267,9 +268,7 @@ public class StageEndFragment extends Fragment {
                 levelChangeAnimatorPts.setInterpolator(new AccelerateInterpolator());
 
                 // Part 2
-                int part2Points = newTotalPoints - next_level_point_threshold;
-//                int duration2 = (int) (duration * ((double) part2Points/levelPoints));
-                int duration2 = duration;
+
                 initialFraction = (int) (((double) pointsBeforeAdding
                         / next_next_level_point_threshold) * ProgressBar1000.MAX);;
                 updatedFraction = (int) (((double) newTotalPoints
@@ -277,12 +276,12 @@ public class StageEndFragment extends Fragment {
                 ObjectAnimator progressAnimator2 = ObjectAnimator
                         .ofInt(mStageEndPointsFractionProgressBar, "progress",
                                 initialFraction, updatedFraction);
-                progressAnimator2.setDuration(duration2);
+                progressAnimator2.setDuration(duration);
                 progressAnimator2.setInterpolator(new AccelerateInterpolator());
 
                 ValueAnimator pointsAnimator2 = ValueAnimator
                         .ofInt(next_level_point_threshold, mProfile.getPoints());
-                pointsAnimator2.setDuration(duration2);
+                pointsAnimator2.setDuration(duration);
                 pointsAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
                     @Override
@@ -300,8 +299,6 @@ public class StageEndFragment extends Fragment {
                 animatorSet.start();
             }
             else {
-                int initialFraction = (int) (((double) pointsBeforeAdding
-                        / next_level_point_threshold) * ProgressBar1000.MAX);
                 int updatedFraction = (int) (((double) this.mProfile.getPoints()
                         / next_level_point_threshold) * ProgressBar1000.MAX);
                 ObjectAnimator progressAnimator = ObjectAnimator
