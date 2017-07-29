@@ -196,6 +196,7 @@
     <Button
         style="@style/AnswerButton"
         android:id="@+id/stage_end_continue_try_again_button"
+        android:backgroundTint="@color/mediumGreen"
         android:text=""
         android:layout_width="0dp"
         android:layout_height="wrap_content"
