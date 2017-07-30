@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia;
+package com.davidjeastman.tripletrivia;
 
 import java.io.Serializable;
 import java.util.UUID;

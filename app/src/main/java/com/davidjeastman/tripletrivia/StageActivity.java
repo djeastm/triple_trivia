@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia;
+package com.davidjeastman.tripletrivia;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class StageActivity extends AppCompatActivity {
 
-    private static final String EXTRA_STAGE_ID = "com.davidjeastman.tufftrivia.stage_id";
+    private static final String EXTRA_STAGE_ID = "com.davidjeastman.tripletrivia.stage_id";
 
     public static Intent newIntent(Context packageContext, int stage) {
         Intent intent = new Intent(packageContext, StageActivity.class);

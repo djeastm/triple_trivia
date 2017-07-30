@@ -130,8 +130,8 @@
 
     <Button
         android:id="@+id/timer_box_button"
-        android:layout_width="88dp"
-        android:layout_height="60dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:elevation="4dp"
         android:background="?attr/colorAccent"
         android:text="00"
@@ -142,6 +142,7 @@
         app:layout_constraintBottom_toTopOf="@+id/answer_button_1"
         app:layout_constraintLeft_toRightOf="@+id/fifty_fifty_button"
         android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.5"
         />
 
     <LinearLayout
@@ -155,8 +156,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/answer_button_1"
         app:layout_constraintLeft_toRightOf="@+id/timer_box_button"
+        android:layout_marginTop="16dp"
         app:layout_constraintHorizontal_bias="0.75"
-        android:layout_marginTop="16dp">
+        >
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/life_3_imageview"

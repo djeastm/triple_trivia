@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia.database;
+package com.davidjeastman.tripletrivia.database;
 
 /**
  * Created by David Eastman on 6/24/2017.

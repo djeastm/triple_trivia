@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId 'com.davidjeastman.tufftrivia'
+        applicationId 'com.davidjeastman.tripletrivia'
         minSdkVersion 21
         targetSdkVersion 24
         versionCode 1

@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia;
+package com.davidjeastman.tripletrivia;
 
 import android.content.Intent;
 import android.os.Bundle;

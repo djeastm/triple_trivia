@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.davidjeastman.tufftrivia.ProgressBar1000
+<com.davidjeastman.tripletrivia.ProgressBar1000
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@android:style/Widget.ProgressBar.Horizontal"
     android:max="1000"

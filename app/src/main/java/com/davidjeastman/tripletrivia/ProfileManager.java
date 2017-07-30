@@ -1,13 +1,13 @@
-package com.davidjeastman.tufftrivia;
+package com.davidjeastman.tripletrivia;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.davidjeastman.tufftrivia.database.TriviaCursorWrapper;
-import com.davidjeastman.tufftrivia.database.TriviaDbHelper;
-import com.davidjeastman.tufftrivia.database.TriviaDbSchema.ProfileTable;
+import com.davidjeastman.tripletrivia.database.TriviaCursorWrapper;
+import com.davidjeastman.tripletrivia.database.TriviaDbHelper;
+import com.davidjeastman.tripletrivia.database.TriviaDbSchema.ProfileTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public class ProfileManager {
-    public static final String APP_NAME = "TuffTrivia";
+    public static final String APP_NAME = "TripleTrivia";
     public static final String TAG = "ProfileManager";
     public static final String APP_DIRECTORY = APP_NAME;
 

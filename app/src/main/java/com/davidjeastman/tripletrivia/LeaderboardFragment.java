@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia;
+package com.davidjeastman.tripletrivia;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

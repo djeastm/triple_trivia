@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia.database;
+package com.davidjeastman.tripletrivia.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

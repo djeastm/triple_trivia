@@ -1,4 +1,4 @@
-package com.davidjeastman.tufftrivia;
+package com.davidjeastman.tripletrivia;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static com.davidjeastman.tufftrivia.R.id.stage_end_points_fraction_text_view;
+import static com.davidjeastman.tripletrivia.R.id.stage_end_points_fraction_text_view;
 
 /**
  * Created by David Eastman on 6/22/2017.
