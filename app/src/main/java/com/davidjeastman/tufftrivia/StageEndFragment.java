@@ -151,10 +151,10 @@ public class StageEndFragment extends Fragment {
 
         mStageEndCorrectAnswersTextView
                 .setText(getString(R.string.correct_answers, mNumCorrect, mQuestions.size()));
-        String progress_to_next_level =
-                getString(R.string.progress_to_level) + " " + (mProfile.getLevel() + 1);
+//        String progress_to_next_level =
+//                getString(R.string.progress_to_level) + " " + (mProfile.getLevel() + 1);
         mStageEndNextLevelTextView
-                .setText(progress_to_next_level);
+                .setText(getString(R.string.profile_level_text,mProfile.getLevel()));
         mStageEndPointsAbbrevTextView
                 .setText(String.valueOf(mStagePoints));
         mStageEndTimeBonusPtsAbbrevTextView
@@ -247,10 +247,10 @@ public class StageEndFragment extends Fragment {
                     @Override
                     public void onFinish() {
                         mProfile.setLevel(newLevel);
-                        String progress_to_next_level =
-                                getString(R.string.progress_to_level) + " " + (newLevel + 1);
+//                        String progress_to_next_level =
+//                                getString(R.string.progress_to_level) + " " + (newLevel + 1);
                         mStageEndNextLevelTextView
-                                .setText(progress_to_next_level);
+                                .setText(getString(R.string.profile_level_text,mProfile.getLevel()));
                         ProfileManager.get(getActivity()).updateProfile(mProfile);
                     }
                 }.start();
@@ -299,7 +299,7 @@ public class StageEndFragment extends Fragment {
                 animatorSet.start();
             }
             else {
-                int updatedFraction = (int) (((double) this.mProfile.getPoints()
+                int updatedFraction = (int) (((double) mProfile.getPoints()
                         / next_level_point_threshold) * ProgressBar1000.MAX);
                 ObjectAnimator progressAnimator = ObjectAnimator
                         .ofInt(mStageEndPointsFractionProgressBar, "progress",
@@ -324,9 +324,9 @@ public class StageEndFragment extends Fragment {
                 animatorSet.play(progressAnimator).with(pointsAnimator);
                 animatorSet.start();
 
-                ProfileManager.get(getActivity()).updateProfile(mProfile);
-            }
 
+            }
+            ProfileManager.get(getActivity()).updateProfile(mProfile);
         } else {
             mStagePoints = 0;
             mTimeBonusPoints = 0;
