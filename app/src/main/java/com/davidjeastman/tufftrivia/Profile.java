@@ -30,7 +30,7 @@ public class Profile {
     public Profile(UUID id) {
         mId = id;
         mName = "John Doe";
-        mLocation = "Nowhere";
+        mLocation = "Earth";
         mStage = 1;
         mLevel = 1;
         mSkill = SKILL_START;

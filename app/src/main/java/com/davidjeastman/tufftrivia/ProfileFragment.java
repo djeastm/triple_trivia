@@ -56,7 +56,11 @@ public class ProfileFragment extends Fragment {
 
         mPointsField = v.findViewById(R.id.profile_points_fraction_text_view);
 
+        // Hide rank until networking is set up
         mRankField = v.findViewById(R.id.profile_rank_text_view);
+        TextView mRankLabel = v.findViewById(R.id.profile_rank_label_text_view);
+        mRankField.setVisibility(View.INVISIBLE);
+        mRankLabel.setVisibility(View.INVISIBLE);
 
         mPlayButton = v.findViewById(R.id.play_button);
         mPlayButton.setOnClickListener(new View.OnClickListener() {

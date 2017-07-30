@@ -91,6 +91,7 @@
         android:text="@string/profile_level_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/profile_rank_text_view"
         app:layout_constraintRight_toRightOf="parent"
