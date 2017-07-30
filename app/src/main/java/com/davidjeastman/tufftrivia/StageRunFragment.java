@@ -1,6 +1,7 @@
 package com.davidjeastman.tufftrivia;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
@@ -80,7 +81,8 @@ public class StageRunFragment extends Fragment {
 
                 if (thisButton.getText().equals(mCurrentQuestion.getCorrectAnswer())) {
                     mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(true);
-                    thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
+                    thisButton.setBackground(getResources()
+                            .getDrawable(R.drawable.button_answer_correct));
                     play(CORRECT_SOUND);
                 } else {
                     mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(false);
@@ -349,18 +351,27 @@ public class StageRunFragment extends Fragment {
 
     public void play(String soundFilename) {
         int soundId;
-        switch (soundFilename) {
-            case CORRECT_SOUND:
-                soundId = mSounds.get(0).getSoundId();
-                break;
-            case INCORRECT_SOUND:
-                soundId = mSounds.get(1).getSoundId();
-                break;
-            default:
-                soundId = mSounds.get(0).getSoundId();
+
+        SharedPreferences pref = getActivity()
+                .getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+
+        boolean isSoundOn = pref.getBoolean(getString(R.string.sound_on_off_key), false);
+
+        if (isSoundOn) {
+            switch (soundFilename) {
+                case CORRECT_SOUND:
+                    soundId = mSounds.get(0).getSoundId();
+                    break;
+                case INCORRECT_SOUND:
+                    soundId = mSounds.get(1).getSoundId();
+                    break;
+                default:
+                    soundId = mSounds.get(0).getSoundId();
+            }
+
+            mSoundPool.play(soundId, 0.7f, 0.7f, 1, 0, 1.0f);
         }
 
-        mSoundPool.play(soundId, 0.7f, 0.7f, 1, 0, 1.0f);
     }
 
     private void load(Sound sound) throws IOException {

@@ -4,10 +4,27 @@
               android:layout_margin="16dp"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView
-        style="?android:listSeparatorTextViewStyle"
-        android:id="@+id/settings_label_text_view"
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings_label"/>
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        >
+
+        <TextView
+            android:id="@+id/settings_sound_text_view"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sound_setting_label"/>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sound_on_off_switch"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 </LinearLayout>

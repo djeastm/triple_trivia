@@ -25,28 +25,25 @@ public class MainActivity extends FragmentActivity {
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) return ProfileFragment.newInstance();
-                else if (position == 1) return LeaderboardFragment.newInstance();
-                else if (position == 2) return SettingsFragment.newInstance();
-                else if (position == 3) return AboutFragment.newInstance();
+                else if (position == 1) return SettingsFragment.newInstance();
+                else if (position == 2) return AboutFragment.newInstance();
                 else return null;
             }
 
             @Override
             public int getCount() {
-                return 1;
+                return 3;
             } // Change to add other tabs
 
             @Override
             public CharSequence getPageTitle(int position) {
                 switch (position) {
                     case 0:
-                        return "Profile";
+                        return getString(R.string.profile_label);
                     case 1:
-                        return "Leaderboard";
+                        return getString(R.string.settings_label);
                     case 2:
-                        return "Settings";
-                    case 3:
-                        return "About";
+                        return getString(R.string.about_label);
                 }
 
                 return null;

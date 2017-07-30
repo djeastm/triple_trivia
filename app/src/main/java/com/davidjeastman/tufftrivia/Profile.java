@@ -29,7 +29,7 @@ public class Profile {
 
     public Profile(UUID id) {
         mId = id;
-        mName = "John Doe";
+        mName = "Player";
         mLocation = "Earth";
         mStage = 1;
         mLevel = 1;
