@@ -34,6 +34,18 @@ import java.util.List;
 
 public class StageRunFragment extends Fragment {
 
+    private static final int[] triple_icon_imageviews = {
+            R.id.triple_1_1_imageview,
+            R.id.triple_1_2_imageview,
+            R.id.triple_1_3_imageview,
+            R.id.triple_2_1_imageview,
+            R.id.triple_2_2_imageview,
+            R.id.triple_2_3_imageview,
+            R.id.triple_3_1_imageview,
+            R.id.triple_3_2_imageview,
+            R.id.triple_3_3_imageview
+    };
+
     private static final String TAG = "StageRunFragment";
     private static final int TIMER_SECONDS = 90;
 
@@ -47,6 +59,7 @@ public class StageRunFragment extends Fragment {
     CountDownTimer mStartQuestionTimer;
     CountDownTimer mEndQuestionTimer;
     private TextView mAppNameTextView;
+    private List<ImageView> mTripleIconImageViews;
     private TextView mQuestionTextView;
     private Button mFiftyFiftyButton;
     private ImageView mLife1ImageView;
@@ -84,6 +97,9 @@ public class StageRunFragment extends Fragment {
                     thisButton.setBackground(getResources()
                             .getDrawable(R.drawable.button_answer_correct));
                     play(CORRECT_SOUND);
+                    mTripleIconImageViews.get(mCurrentQuestionNumber)
+                            .setImageDrawable(getResources()
+                                    .getDrawable(R.drawable.ic_action_important));
                 } else {
                     mQuestions.get(mCurrentQuestionNumber).setPlayerCorrect(false);
                     thisButton.setBackground(getResources().getDrawable(R.drawable.button_answer_incorrect));
@@ -93,6 +109,10 @@ public class StageRunFragment extends Fragment {
                             b.setBackground(getResources().getDrawable(R.drawable.button_answer_correct));
                     }
                     play(INCORRECT_SOUND);
+
+                    mTripleIconImageViews.get(mCurrentQuestionNumber)
+                            .setImageDrawable(getResources()
+                                    .getDrawable(R.drawable.ic_action_not_important));
 
                     switch (++mNumberIncorrect) {
                         case 1:
@@ -130,6 +150,7 @@ public class StageRunFragment extends Fragment {
         int skill = profile.getSkill();
         mQuestions = QuestionManager.get(getActivity()).getNextTripleSet(skill);
         mCurrentQuestionNumber = 0;
+        mTripleIconImageViews = new ArrayList<>(9);
 
         mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
     }
@@ -142,6 +163,10 @@ public class StageRunFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_stage_run_prepost, container, false);
         mConstraintLayout = (ConstraintLayout) v;
         mPrepostConstraintSet.clone(mConstraintLayout);
+
+        for (int i = 0; i < mQuestions.size(); i++) {
+            mTripleIconImageViews.add((ImageView) v.findViewById(triple_icon_imageviews[i]));
+        }
 
         final Button timerButton = v.findViewById(R.id.timer_box_button);
         timerButton.setText(String.valueOf(TIMER_SECONDS));
