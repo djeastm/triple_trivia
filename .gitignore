@@ -9,3 +9,5 @@
 .externalNativeBuild
 
 *.mp3
+*.jks
+/keystore.properties
