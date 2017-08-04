@@ -216,7 +216,9 @@ public class StageRunFragment extends Fragment {
         mAppNameTextView = v.findViewById(R.id.app_name_textview);
         mAppNameTextView.setText(R.string.app_name);
         if (mQuestions.size() == 0)
-            Toast.makeText(getContext(), "Not enough questions!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),
+                    "You've seen all the questions available so far! Try again later!",
+                    Toast.LENGTH_LONG).show();
         else {
             mCurrentQuestion = mQuestions.get(mCurrentQuestionNumber);
             mQuestionTextView = v.findViewById(R.id.question_textview);
