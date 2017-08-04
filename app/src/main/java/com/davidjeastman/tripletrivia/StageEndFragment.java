@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static android.R.attr.duration;
 import static com.davidjeastman.tripletrivia.R.id.stage_end_points_fraction_text_view;
 
 /**
@@ -193,7 +194,7 @@ public class StageEndFragment extends Fragment {
     private void updateProfile(boolean isStagePassed) {
         mIsUpdated = true;
         int pointsBeforeAdding = mProfile.getPoints();
-        final int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+        final int next_level_point_threshold = Profile.getNextLevelThreshold(mProfile.getLevel());
         int initialFraction = (int) (((double) pointsBeforeAdding
                 / next_level_point_threshold) * ProgressBar1000.MAX);
         mStageEndPointsFractionProgressBar.setProgress(initialFraction);
@@ -207,7 +208,6 @@ public class StageEndFragment extends Fragment {
             int levelPoints = mStagePoints + mTimeBonusPoints;
             int newTotalPoints = mProfile.getPoints() + levelPoints;
             mProfile.setPoints(newTotalPoints);
-            int duration = PROGRESS_ANIMATION_DURATION;
 
             if (newTotalPoints > next_level_point_threshold) {
                 // Split animations
@@ -216,12 +216,12 @@ public class StageEndFragment extends Fragment {
                 ObjectAnimator progressAnimator1 = ObjectAnimator
                         .ofInt(mStageEndPointsFractionProgressBar, "progress",
                                 initialFraction, updatedFraction);
-                progressAnimator1.setDuration(duration);
+                progressAnimator1.setDuration(PROGRESS_ANIMATION_DURATION);
                 progressAnimator1.setInterpolator(new AccelerateInterpolator());
 
                 ValueAnimator pointsAnimator1 = ValueAnimator
                         .ofInt(pointsBeforeAdding, next_level_point_threshold);
-                pointsAnimator1.setDuration(duration);
+                pointsAnimator1.setDuration(PROGRESS_ANIMATION_DURATION);
                 pointsAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
                     @Override
@@ -255,7 +255,7 @@ public class StageEndFragment extends Fragment {
                     }
                 }.start();
 
-                final int next_next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[newLevel];
+                final int next_next_level_point_threshold = Profile.getNextLevelThreshold(newLevel);
                 ObjectAnimator levelChangeAnimatorBar = ObjectAnimator
                         .ofFloat(mStageEndPointsFractionProgressBar, "rotation",
                                 0f, 360f);
@@ -276,12 +276,12 @@ public class StageEndFragment extends Fragment {
                 ObjectAnimator progressAnimator2 = ObjectAnimator
                         .ofInt(mStageEndPointsFractionProgressBar, "progress",
                                 initialFraction, updatedFraction);
-                progressAnimator2.setDuration(duration);
+                progressAnimator2.setDuration(PROGRESS_ANIMATION_DURATION);
                 progressAnimator2.setInterpolator(new AccelerateInterpolator());
 
                 ValueAnimator pointsAnimator2 = ValueAnimator
                         .ofInt(next_level_point_threshold, mProfile.getPoints());
-                pointsAnimator2.setDuration(duration);
+                pointsAnimator2.setDuration(PROGRESS_ANIMATION_DURATION);
                 pointsAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
                     @Override

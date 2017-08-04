@@ -9,8 +9,6 @@ import java.util.UUID;
 public class Profile {
 
     public static final double SKILL_ADJUST = 0.25;
-    public static final int[] NEXT_LEVEL_THRESHOLDS =
-            {-1, 800, 1600, 2500, 3500, 4600, 5700, 6800};
     private static final int SKILL_START = 1;
     private static final int SKILL_MAX = 3;
     private UUID mId;
@@ -22,6 +20,9 @@ public class Profile {
     private int mPoints;
     private int mRank;
 
+    public static int getNextLevelThreshold(int level) {
+        return (level) * 1500;
+    }
 
     public Profile() {
         this(UUID.randomUUID());

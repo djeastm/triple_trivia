@@ -198,20 +198,20 @@ public class StageRunFragment extends Fragment {
         });
 
         // Debug cheat to end stage fast
-        timerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mStageTimeLeft = 2000;
-                for (Question q : mQuestions) {
-                    q.setQuestionSeen(true);
-                    q.setPlayerAnswer(q.getCorrectAnswer());
-                    q.setPlayerCorrect(true);
-                    QuestionManager.get(getActivity()).updateQuestion(q);
-                }
-
-                loadEndStage();
-            }
-        });
+//        timerButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mStageTimeLeft = 2000;
+//                for (Question q : mQuestions) {
+//                    q.setQuestionSeen(true);
+//                    q.setPlayerAnswer(q.getCorrectAnswer());
+//                    q.setPlayerCorrect(true);
+//                    QuestionManager.get(getActivity()).updateQuestion(q);
+//                }
+//
+//                loadEndStage();
+//            }
+//        });
 
         mAppNameTextView = v.findViewById(R.id.app_name_textview);
         mAppNameTextView.setText(R.string.app_name);

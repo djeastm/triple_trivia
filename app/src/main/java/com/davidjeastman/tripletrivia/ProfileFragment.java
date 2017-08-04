@@ -59,8 +59,8 @@ public class ProfileFragment extends Fragment {
         // Hide rank until networking is set up
         mRankField = v.findViewById(R.id.profile_rank_text_view);
         TextView mRankLabel = v.findViewById(R.id.profile_rank_label_text_view);
-        mRankField.setVisibility(View.INVISIBLE);
-        mRankLabel.setVisibility(View.INVISIBLE);
+        mRankField.setVisibility(View.GONE);
+        mRankLabel.setVisibility(View.GONE);
 
         mPlayButton = v.findViewById(R.id.play_button);
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
         mLevelField.setText(getResources()
                 .getString(R.string.profile_level_text, mProfile.getLevel()));
 
-        int next_level_point_threshold = Profile.NEXT_LEVEL_THRESHOLDS[mProfile.getLevel()];
+        int next_level_point_threshold = Profile.getNextLevelThreshold(mProfile.getLevel());
 
         mNextLevelProgressBar
                 .setProgress((int) (((double) mProfile.getPoints()
