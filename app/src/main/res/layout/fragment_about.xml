@@ -28,6 +28,7 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.SearchResult.Title"
+        android:autoLink="web"
         android:text="davidjeastman.com"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
