@@ -226,6 +226,8 @@ public class StageEndFragment extends Fragment {
 
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        if (isAdded())
+                        if (mStageEndPointsFractionTextView != null)
                         mStageEndPointsFractionTextView
                                 .setText(getString(R.string.points_fraction,
                                         valueAnimator.getAnimatedValue().toString(), next_level_point_threshold));
@@ -234,6 +236,7 @@ public class StageEndFragment extends Fragment {
 
 
                 final int newLevel = mProfile.getLevel() + 1;
+                mProfile.setLevel(newLevel);
 
                 // Change level
                 long levelChangeDuration = SPIN_ANIMATION_DURATION + PROGRESS_ANIMATION_DURATION;
@@ -246,12 +249,12 @@ public class StageEndFragment extends Fragment {
 
                     @Override
                     public void onFinish() {
-                        mProfile.setLevel(newLevel);
+                        if (mStageEndPointsFractionTextView != null)
 //                        String progress_to_next_level =
 //                                getString(R.string.progress_to_level) + " " + (newLevel + 1);
                         mStageEndNextLevelTextView
-                                .setText(getString(R.string.profile_level_text,mProfile.getLevel()));
-                        ProfileManager.get(getActivity()).updateProfile(mProfile);
+                                .setText(getString(R.string.profile_level_text,newLevel));
+
                     }
                 }.start();
 
@@ -286,6 +289,8 @@ public class StageEndFragment extends Fragment {
 
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        if (isAdded())
+                        if (mStageEndPointsFractionTextView != null)
                         mStageEndPointsFractionTextView
                                 .setText(getString(R.string.points_fraction,
                                         valueAnimator.getAnimatedValue().toString(), next_next_level_point_threshold));
@@ -314,6 +319,8 @@ public class StageEndFragment extends Fragment {
 
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        if (isAdded())
+                        if (mStageEndPointsFractionTextView != null)
                         mStageEndPointsFractionTextView
                                 .setText(getString(R.string.points_fraction,
                                         valueAnimator.getAnimatedValue().toString(), next_level_point_threshold));
